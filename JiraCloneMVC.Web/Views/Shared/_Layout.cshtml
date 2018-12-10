@@ -10,21 +10,20 @@
 
 </head>
 <body>
-<!-- Navbar (sit on top) -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 <div class="navbar-container">
     <div class="navbar-subcontainer navbar-style">
-        <a href=@Url.Action("Index", "Home") class="navbar-buttons"><b>MR</b> Mange </a>
-        <!-- Float links to the right. Hide them on small screens -->
-        <div class="navbar-collapse collapse navbar-list">
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home", new {area = ""}, new {@class = "navbar-subcontainer-item navbar-buttons" })</li>
-                <li>@Html.ActionLink("About", "About", "Home", new {area = ""}, new {@class = "navbar-subcontainer-item navbar-buttons" })</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home", new {area = ""}, new {@class = "navbar-subcontainer-item navbar-buttons" })</li>
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { @class="nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })</li>
             </ul>
         </div>
     </div>
 </div>
-
+    <div class="container body-content mt-5">
 <!-- Body container -->
 @RenderBody()
 
