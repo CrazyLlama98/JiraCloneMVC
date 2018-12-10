@@ -1,9 +1,45 @@
-﻿body {
+﻿html { box-sizing: border-box }
+
+*, *:before, *:after { box-sizing: inherit }
+
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden
+}
+
+body {
+    margin: 0;
+    padding: 0;
     padding-top: 50px;
-    padding-bottom: 20px;
+}
+
+html, body {
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    line-height: 1.5
+}
+
+h1 { font-size: 36px }
+
+h2 { font-size: 30px }
+
+h3 { font-size: 24px }
+
+h4 { font-size: 20px }
+
+h5 { font-size: 18px }
+
+h6 { font-size: 16px }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-weight: 400;
+    margin: 10px 0
 }
 
 /* Set padding to keep content from hitting the edges */
+
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -12,13 +48,269 @@
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-.dl-horizontal dt {
-    white-space: normal;
-}
+
+.dl-horizontal dt { white-space: normal; }
 
 /* Set width on the form input elements since they're 100% wide by default */
+
 input,
 select,
-textarea {
-    max-width: 280px;
+textarea { max-width: 280px; }
+
+a {
+    -webkit-text-decoration-skip: objects;
+    background-color: transparent;
+}
+
+/***************/
+
+/*   NAV-BAR   */
+
+/***************/
+
+.navbar-subcontainer {
+    overflow: hidden;
+    width: 100%;
+}
+
+.navbar-subcontainer a { text-decoration: none; }
+
+.navbar-subcontainer .navbar-element {
+    border: none;
+    display: block;
+    float: left;
+    outline: 0;
+    padding: 8px 16px;
+    width: auto;
+}
+
+.navbar-buttons {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+    padding: 8px 16px !important;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.navbar-buttons:disabled {
+    cursor: not-allowed;
+    opacity: 0.3
+}
+
+.navbar-buttons:hover {
+    background-color: #ccc !important;
+    color: #000 !important;
+}
+
+.navbar-buttons {
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+.navbar-list {
+    display: none !important;
+    float: right !important;
+}
+
+.navbar-style {
+    background-color: #fff !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #000 !important;
+    letter-spacing: 4px;
+    padding: 8px 16px !important;
+}
+
+.navbar-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+/***************/
+
+/*   FOOTER    */
+
+/***************/
+
+footer {
+    background-color: #000 !important;
+    color: #fff !important;
+    padding-bottom: 16px !important;
+    padding-top: 16px !important;
+    text-align: center !important;
+}
+
+/*******************************/
+
+/*   HEADER  - HOME - INDEX    */
+
+/*******************************/
+
+header.home-index-header {
+    display: inline-block;
+    height: auto !important;
+    letter-spacing: 4px;
+    max-height: 101vh;
+    overflow: hidden;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+.home-index-header-img {
+    -ms-flex-wrap: wrap;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    max-width: 100%;
+    min-height: 50vh;
+    vertical-align: middle;
+}
+
+.home-index-header-title-container {
+    -ms-transform: translate(-50%, -50%);
+    left: 50%;
+    margin-top: 16px !important;
+    position: absolute;
+    text-align: center !important;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1.home-index-header-title {
+    color: #fff !important;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 2.5rem !important;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+span.home-index-header-title-bold {
+    background-color: #000 !important;
+    color: #fff !important;
+    opacity: 0.75;
+    padding: 8px 16px !important;
+}
+
+span.home-index-header-title { color: #f1f1f1 !important }
+
+/*******************************/
+
+/*    GRID  - HOME - INDEX     */
+
+/*******************************/
+
+.home-index-grid-padding {
+    clear: both;
+    display: table;
+    padding-bottom: 2% !important;
+    padding-top: 2% !important;
+}
+
+.home-index-grid-container:after, .home-index-grid-container:before {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.home-index-grid-light-grey {
+    background-color: #f1f1f1 !important;
+    color: #000 !important;
+}
+
+.home-index-grid-content {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+}
+
+.home-index-grid-size-text {
+    float: left;
+    padding: 1%;
+    width: 33.3333333333333%;
+}
+
+.home-index-grid-size-img {
+    float: left;
+    padding: 1%;
+    text-align: center !important;
+    width: 66.6666666666666666%;
+}
+
+.home-index-grid-size-img img {
+    height: auto;
+    width: 100%;
+}
+
+.home-index-grid-size-text h5 {
+    padding-bottom: 32px !important;
+    padding-top: 32px !important;
+}
+
+.home-index-grid-size-text p { color: #757575 !important }
+
+.home-index-grid-container img {
+    display: block;
+    height: auto;
+    min-height: 100%;
+    width: 100%;
+}
+
+.home-index-last-grid {
+    display: inline-block;
+    height: auto !important;
+    overflow: hidden;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateY(5px);
+}
+
+.home-index-last-grid-size-text {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    padding: 1%;
+    width: 50%;
+}
+
+a.home-index-last-grid-button, a:hover.home-index-last-grid-button {
+    background: #5AAC44;
+    box-shadow: 0 1px 0 #3F6F21;
+    color: #fff;
+    border: 0;
+    border-radius: .3em;
+    cursor: pointer;
+    display: inline-block;
+    font-size: .9em;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: .3em 1em 1em 0;
+    outline: 0;
+    padding: .7em 3em;
+    position: relative;
+    text-decoration: none;
+}
+
+a:hover.home-index-last-grid-button {
+    background: rgb( 63, 111, 33 )
 }
