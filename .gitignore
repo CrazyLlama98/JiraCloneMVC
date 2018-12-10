@@ -328,3 +328,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+JiraCloneMVC.Web/JiraCloneMVC.Web.csproj
+JiraCloneMVC.Web/packages.config
+JiraCloneMVC.Web/Web.config
