@@ -5,7 +5,8 @@
 html {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    overflow-x: hidden
+    overflow-x: hidden;
+    position: relative;
 }
 
 body {
@@ -149,9 +150,14 @@ a {
 footer {
     background-color: #000 !important;
     color: #fff !important;
-    padding-bottom: 16px !important;
-    padding-top: 16px !important;
+    padding: 2em 0;
     text-align: center !important;
+    position: absolute;
+    bottom: -10em;
+    left: 0;
+    right: 0;
+    width: 100%;
+    clear: both;
 }
 
 /*******************************/

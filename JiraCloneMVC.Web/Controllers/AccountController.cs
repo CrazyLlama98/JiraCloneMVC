@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace JiraCloneMVC.Web.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         protected ApplicationUserManager UserManager { get { return HttpContext.GetOwinContext().Get<ApplicationUserManager>(); } }
@@ -57,7 +58,7 @@ namespace JiraCloneMVC.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.Username, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -67,9 +68,16 @@ namespace JiraCloneMVC.Web.Controllers
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
+            
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            SignInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
