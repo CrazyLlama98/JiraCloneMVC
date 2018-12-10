@@ -2,30 +2,135 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<!-- Header -->
+<header class="home-index-header">
+    <img src="~/src/module-1.jpg" alt="Team" class="home-index-header-img" id="imageHeader">
+    <div class="home-index-header-title-container">
+        <h1 class="home-index-header-title"><span class="home-index-header-title-bold"><b>MR</b></span> <span class="home-index-header-title">Manage</span></h1>
+    </div>
+</header>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<script>
+    window.onload = mainChangeImgHeaderSrc();
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function mainChangeImgHeaderSrc() {
+
+        for (var i = 2; i < 10; i++) {
+            await sleep(5000);
+            changeImgHeaderSrc(i);
+            i = i % 5;
+            await sleep(2000);
+        }
+    }
+    function changeImgHeaderSrc(i) {
+        document.getElementById("imageHeader").src = "../src/module-" + i + ".jpg";
+    }
+</script>
+
+<main id="home-index">
+    <!-- First Grid -->
+    <div class="home-index-grid-padding home-index-grid-container">
+        <div class="home-index-grid-content">
+            <div class="home-index-grid-size-text">
+                <h1>Project collaboration</h1>
+                <h3>
+                    Work together on a whole new level.
+                </h3>
+
+                <p>
+                    Create, share, and collaborate on projects all in one place to keep your projects moving forward, faster.
+                </p>
+            </div>
+
+            <div class="home-index-grid-size-img">
+                <img src="~/src/playbooks_boardtile_engineering.png" />
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+    <!-- Second Grid -->
+    <div class="home-index-grid-padding home-index-grid-light-grey home-index-grid-container">
+        <div class="home-index-grid-content">
+            <div class="home-index-grid-size-img">
+                <img src="~/src/playbooks_boardtile_productmanagers.png" />
+            </div>
+
+            <div class="home-index-grid-size-text">
+                <h1>Knowledge base</h1>
+                <h3>It's all here when you need it.</h3>
+                <p>Easily publish, organize, and access company information in one central location so you can help your customers help themselves.</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+
+    <!-- Third Grid -->
+    <div class="home-index-grid-padding home-index-grid-container">
+        <div class="home-index-grid-content">
+            <div class="home-index-grid-size-text">
+                <h1>Team documentation</h1>
+                <h3>
+                    Do teams the right way.
+                </h3>
+
+                <p>
+                    Capture, store, and grow your team's knowledge so you can stay up to date and on the same page - literally.
+                </p>
+            </div>
+
+            <div class="home-index-grid-size-img">
+                <img src="~/src/playbooks_boardtile_home.png" />
+            </div>
+        </div>
     </div>
-</div>
+
+    <!-- Fourth Grid -->
+    <div class="home-index-grid-padding home-index-grid-light-grey home-index-grid-container">
+        <div class="home-index-grid-content">
+            <div class="home-index-grid-size-img">
+                <img src="~/src/playbooks_boardtile_productivity.png" />
+            </div>
+
+            <div class="home-index-grid-size-text">
+                <h1>Personal Productivity</h1>
+                <h3>A better way to work</h3>
+                <p>High performing teams work together to maximize productivity. Confluence combines the speed of creating on your own with the advantages of working together. Confluence makes it easy to create documents as a team, provide feedback in context and quickly iterate until your work is finalized.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Third Grid -->
+    <div class="home-index-grid-padding home-index-grid-container">
+        <div class="home-index-grid-content">
+            <div class="home-index-grid-size-text">
+                <h1>Startups</h1>
+                <h3>
+                    Single source of truth
+                </h3>
+
+                <p>
+                    Transparency and organization are key for modern teams. Confluence gives you a central place to keep your team's work organized and accessible, making it easier to find the information needed to keep work moving forward.
+                </p>
+            </div>
+
+            <div class="home-index-grid-size-img">
+                <img src="~/src/playbooks_boardtile_support.png" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Last Grid -->
+    <div class="home-index-last-grid">
+        <img src="../src/usecases-taco.jpg" class="home-index-header-img">
+        <div class="home-index-last-grid-size-text">
+            <h1><b>Getting Started With MR Manage</b></h1>
+            <h3>
+                Learn the basics of using MR Manage to make all your organizational dreams come true.
+            </h3>
+            <a class="home-index-last-grid-button" href="#"> Sing Up - It's Free </a>
+        </div>
+    </div>
+
+</main>
+

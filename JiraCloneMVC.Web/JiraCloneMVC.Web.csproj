@@ -226,6 +226,25 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="src\bg-06.jpg" />
+    <Content Include="src\bg-07.jpg" />
+    <Content Include="src\imag.png" />
+    <Content Include="src\img-38.jpg" />
+    <Content Include="src\img-39.jpg" />
+    <Content Include="src\img-40.jpg" />
+    <Content Include="src\marker.png" />
+    <Content Include="src\module-1.jpg" />
+    <Content Include="src\module-2.jpg" />
+    <Content Include="src\module-3.jpg" />
+    <Content Include="src\module-4.jpg" />
+    <Content Include="src\module-5.jpg" />
+    <Content Include="src\playbooks_boardtile_engineering.png" />
+    <Content Include="src\playbooks_boardtile_home.png" />
+    <Content Include="src\playbooks_boardtile_productivity.png" />
+    <Content Include="src\playbooks_boardtile_productmanagers.png" />
+    <Content Include="src\playbooks_boardtile_support.png" />
+    <Content Include="src\power-up-productivity.png" />
+    <Content Include="src\usecases-taco.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
