@@ -17,5 +17,7 @@ namespace JiraCloneMVC.Web
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<JiraCloneMVC.Web.Models.Project> Projects { get; set; }
     }
 }
