@@ -1,9 +1,14 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using JiraCloneMVC.Web.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace JiraCloneMVC.Web.Controllers
 {
@@ -14,9 +19,25 @@ namespace JiraCloneMVC.Web.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            if (TempData.ContainsKey("message")) ViewBag.message = TempData["message"].ToString();
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
 
-            return View(db.Projects.ToList());
+            dynamic mymodel = new ExpandoObject();
+            List<Project> projects = new List<Project>();
+            foreach (var project in db.Projects.ToList())
+            {
+                foreach (var group in db.Groups.ToList())
+                {
+                    if(group.UserId == User.Identity.GetUserId() && project.Id == group.ProjectId)
+                        projects.Add(project);
+                }
+            }
+
+            mymodel.Projects = projects;
+            mymodel.Users = db.Users.ToList();
+            return View(mymodel);
         }
 
         // GET: Projects/Details/5
@@ -26,6 +47,7 @@ namespace JiraCloneMVC.Web.Controllers
 
             var project = db.Projects.Find(id);
             if (project == null) return HttpNotFound();
+            ViewBag.OrganizerName = db.Users.Find(project.OrganizerId).UserName;
 
             return View(project);
         }
@@ -37,8 +59,6 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         // POST: Projects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,Status,StartDate,EndDate")]
@@ -47,7 +67,13 @@ namespace JiraCloneMVC.Web.Controllers
             if (ModelState.IsValid)
             {
                 project.OrganizerId = User.Identity.GetUserId();
-                //when create a new proj must become organizer - TO DO THIS !!!!!!!!!!!!!!!!!!!!
+
+                Group group = new Group();
+                group.UserId = project.OrganizerId;
+                group.ProjectId = project.Id;
+                group.RoleId = db.Roles
+                    .FirstOrDefault(x => x.Name.Equals("Organizator", StringComparison.OrdinalIgnoreCase)).Id;
+                db.Groups.Add(group);
 
                 db.Projects.Add(project);
                 db.SaveChanges();
@@ -76,8 +102,6 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         // POST: Projects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize(Roles = "Organizator,Administrator")]

@@ -1,4 +1,5 @@
-﻿@model JiraCloneMVC.Web.Models.Project
+﻿@using System.Activities.Statements
+@model JiraCloneMVC.Web.Models.Project
 
 @{
     ViewBag.Title = "Details";
@@ -10,6 +11,14 @@
     <h4>Project</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            Organizer Name
+        </dt>
+
+        <dd>
+           @ViewBag.OrganizerName
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -53,6 +62,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new {id = Model.Id}) |
     @Html.ActionLink("Back to List", "Index")
 </p>
