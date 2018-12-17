@@ -25,17 +25,32 @@ namespace JiraCloneMVC.Web.Controllers
             }
 
             dynamic mymodel = new ExpandoObject();
-            List<Project> projects = new List<Project>();
+            mymodel.UserName = User.Identity.GetUserName();
+
+            List<Project> projectsAdministrate = new List<Project>();
             foreach (var project in db.Projects.ToList())
             {
                 foreach (var group in db.Groups.ToList())
                 {
-                    if(group.UserId == User.Identity.GetUserId() && project.Id == group.ProjectId)
-                        projects.Add(project);
+                    if(group.UserId == User.Identity.GetUserId() && project.Id == group.ProjectId && 
+                       project.OrganizerId == User.Identity.GetUserId())
+                        projectsAdministrate.Add(project);
                 }
             }
+            mymodel.ProjectsAdministrate = projectsAdministrate;
 
-            mymodel.Projects = projects;
+            List<Project> projectsNonAdministrate = new List<Project>();
+            foreach (var project in db.Projects.ToList())
+            {
+                foreach (var group in db.Groups.ToList())
+                {
+                    if (group.UserId == User.Identity.GetUserId() && project.Id == group.ProjectId &&
+                        project.OrganizerId != User.Identity.GetUserId())
+                        projectsNonAdministrate.Add(project);
+                }
+            }
+            mymodel.ProjectsNonAdministrate = projectsNonAdministrate;
+
             mymodel.Users = db.Users.ToList();
             return View(mymodel);
         }
@@ -48,6 +63,9 @@ namespace JiraCloneMVC.Web.Controllers
             var project = db.Projects.Find(id);
             if (project == null) return HttpNotFound();
             ViewBag.OrganizerName = db.Users.Find(project.OrganizerId).UserName;
+            ViewBag.Rol = "Member";
+            if (project.OrganizerId == User.Identity.GetUserId())
+                ViewBag.Rol = "Organizator";
 
             return View(project);
         }
@@ -167,6 +185,15 @@ namespace JiraCloneMVC.Web.Controllers
             if (disposing) db.Dispose();
 
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        [ActionName("DeleteMember")]
+        [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Organizator,Administrator")]
+        public ActionResult DeleteMember(int id)
+        {
+            return RedirectToAction("Index");
         }
     }
 }
