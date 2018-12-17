@@ -70,6 +70,35 @@ namespace JiraCloneMVC.Web.Controllers
             return View(project);
         }
 
+        // GET: Projects/Details/5
+        public ActionResult DetailsMembers(int? id)
+        {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var project = db.Projects.Find(id);
+            if (project == null) return HttpNotFound();
+
+            dynamic mymodel = new ExpandoObject();
+            mymodel.Project = project;
+            mymodel.Organizer = db.Users.Find(project.OrganizerId);
+
+            List<User> members = new List<User>();
+            foreach (var user in db.Users.ToList())
+            {
+                foreach (var group in db.Groups.ToList())
+                {
+                    if (project.Id == group.ProjectId && group.UserId == user.Id && user.Id != project.OrganizerId)
+                        members.Add(user);
+                }
+            }
+            mymodel.Members = members;
+            ViewBag.Rol = "Member";
+            if (project.OrganizerId == User.Identity.GetUserId())
+                ViewBag.Rol = "Organizator";
+
+            return View(mymodel);
+        }
+
         // GET: Projects/Create
         public ActionResult Create()
         {
@@ -99,6 +128,63 @@ namespace JiraCloneMVC.Web.Controllers
             }
 
             return View(project);
+        }
+
+        // GET: Projects/Create
+        public ActionResult AddMember(int? id)
+        {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var project = db.Projects.Find(id);
+            if (project == null) return HttpNotFound();
+
+            dynamic mymodel = new ExpandoObject();
+            mymodel.Project = project;
+            mymodel.Organizer = db.Users.Find(project.OrganizerId);
+
+            List<User> members = new List<User>();
+            foreach (var user in db.Users.ToList())
+            {
+                bool isMember = false;
+                foreach (var group in db.Groups.ToList())
+                {
+                    if (project.Id == group.ProjectId && group.UserId == user.Id)
+                        isMember = true;
+                }
+                if (!isMember)
+                    members.Add(user);
+            }
+
+            mymodel.Users = members;
+            return View(mymodel);
+        }
+
+        // POST: Projects/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddMember( int? idProj, int? idUser)
+        {
+
+            if (idProj == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var project = db.Projects.Find(idProj);
+            if (project == null) return HttpNotFound();
+
+            if (idUser == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var user = db.Users.Find(idUser);
+            if (user == null) return HttpNotFound();
+
+            Group group = new Group();
+            group.UserId = user.Id;
+            group.ProjectId = project.Id;
+            group.RoleId = db.Roles
+                .FirstOrDefault(x => x.Name.Equals("Member", StringComparison.OrdinalIgnoreCase)).Id;
+            db.Groups.Add(group);
+
+            db.SaveChanges();
+
+            return RedirectToAction("AddMember");
         }
 
         // GET: Projects/Edit/5

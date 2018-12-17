@@ -282,6 +282,10 @@
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\DetailsForMembers.cshtml" />
     <Content Include="Views\Projects\DetailsForOrganizerAndAdmin.cshtml" />
+    <Content Include="Views\Projects\DetailsMembers.cshtml" />
+    <Content Include="Views\Projects\DetailsMembersForMembers.cshtml" />
+    <Content Include="Views\Projects\DetailsMembersForOrganizerAndAdmin.cshtml" />
+    <Content Include="Views\Projects\AddMember.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
