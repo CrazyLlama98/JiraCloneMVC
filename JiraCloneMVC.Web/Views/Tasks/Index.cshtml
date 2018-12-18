@@ -1,0 +1,27 @@
+﻿@using JiraCloneMVC.Web.ViewModels
+@model IEnumerable<TaskViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row d-none d-md-flex">
+        <div class="col-md-2">Title</div>
+        <div class="col-md-2">Reporter</div>
+        <div class="col-md-1">Status</div>
+        <div class="col-md-3">Description</div>
+        <div class="col-md-2">Start Date</div>
+        <div class="col-md-2">End Date</div>
+    </div>
+    <hr class="d-none d-md-block" />
+    @foreach (var task in Model)
+    {
+        @Html.Partial("_TaskDetailsPreview", task);
+    }
+    @if (Model.Count() == 0)
+    {
+        @Html.Partial("~/Views/Shared/_NoResultsPartial.cshtml");
+    }
+</div>
+
+

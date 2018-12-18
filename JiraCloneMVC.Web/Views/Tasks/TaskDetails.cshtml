@@ -1,0 +1,50 @@
+﻿@using JiraCloneMVC.Web.ViewModels
+@model TaskViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="row card-body justify-content-between">
+            <h2 class="card-title col-12">@Model.Title</h2>
+            <div class="col-6 col-md-2">Reporter: </div>
+            <div class="col-6 col-md-10">
+                @if (Model.Reporter != null)
+                {
+                    @Model.Reporter.Username
+                }
+            </div>
+            <div class="col-6 col-md-2">Assignee: </div>
+            <div class="col-8 col-md-10">
+                @if (Model.Assignee != null)
+                {
+                    @Model.Assignee.Username
+                }
+                else
+                {
+                    <span>Unassigned</span>
+                }
+            </div>
+            <div class="col-6 col-md-2">Status: </div>
+            <div class="col-5 col-md-10">
+                @Html.Partial("_TaskStatus", Model.Status)
+            </div>
+            <div class="col-6 col-md-2">Start Date:</div>
+            <div class="col-6 col-md-10">@Model.StartDate</div>
+            @if (Model.EndDate.HasValue)
+            {
+                <div class="col-6 col-md-2">End Date:</div>
+                <div class="col-6 col-md-10">
+
+                    @Model.EndDate
+                </div>
+            }
+            <br />
+            <h4 class="col-12">Description</h4>
+            <div class="col-12">
+                @Model.Description
+            </div>
+        </div>
+    </div>
+</div>

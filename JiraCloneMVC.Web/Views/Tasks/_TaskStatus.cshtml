@@ -1,0 +1,15 @@
+﻿@model string
+
+@switch (Model)
+{
+    case Constants.TaskStatus.InProgress:
+        <span class="badge badge-pill badge-info">@Model</span>
+        break;
+    case Constants.TaskStatus.Done:
+        <span class="badge badge-pill badge-success">@Model</span>
+        break;
+    case Constants.TaskStatus.ToDo:
+    default:
+        <span class="badge badge-pill badge-warning">@Model</span>
+        break;
+}
