@@ -318,5 +318,19 @@ a.home-index-last-grid-button, a:hover.home-index-last-grid-button {
 }
 
 a:hover.home-index-last-grid-button {
-    background: rgb( 63, 111, 33 )
+    background: rgb( 63, 111, 33 );
+}
+
+a.tile-link {
+    text-decoration: none;
+    color: black;
+    padding: 1.2em;
+ }
+
+a.tile-link:hover {
+    background: #f4f4f4;
+}
+
+.task-description {
+    white-space: pre-line
 }

@@ -35,7 +35,8 @@ namespace JiraCloneMVC.Web.Controllers
                     Id = t.Id,
                     Status = t.Status,
                     StartDate = t.StartDate,
-                    EndDate = t.EndDate
+                    EndDate = t.EndDate,
+                    ProjectId = t.ProjectId.Value
                 });
             return View(tasks);
         }
@@ -55,7 +56,8 @@ namespace JiraCloneMVC.Web.Controllers
                 Id = task.Id,
                 Status = task.Status,
                 StartDate = task.StartDate,
-                EndDate = task.EndDate
+                EndDate = task.EndDate,
+                ProjectId = task.ProjectId.Value
             });
         }
 

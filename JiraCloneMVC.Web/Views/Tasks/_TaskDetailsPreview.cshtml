@@ -1,36 +1,37 @@
 ﻿@using JiraCloneMVC.Web.ViewModels
 @model TaskViewModel
 
-<div class="row">
-    <div class="col-6 d-block d-md-none">Title</div>
-    <div class="col-6 col-md-2">
-        @Model.Title
+<a class="card shadow-lg tile-link mb-2" href="@Url.Action("ViewTask", "Tasks", new { taskId = Model.Id, projectId = Model.ProjectId })">
+    <div class="row card-body">
+        <div class="col-6 d-block d-md-none">Title</div>
+        <div class="col-6 col-md-2 text-truncate">
+            @Model.Title
+        </div>
+        <div class="col-6 d-block d-md-none">Reporter</div>
+        <div class="col-6 col-md-2">
+            @if (Model.Reporter != null)
+            {
+                @Model.Reporter.Username
+            }
+        </div>
+        <div class="col-6 d-block d-md-none">Status</div>
+        <div class="col-6 col-md-1">
+            @Html.Partial("_TaskStatus", Model.Status)
+        </div>
+        <div class="col-6 d-block d-md-none">Description</div>
+        <div class="col-6 col-md-3 text-truncate">
+            @Model.Description
+        </div>
+        <div class="col-6 d-block d-md-none">Start Date</div>
+        <div class="col-6 col-md-2 small">
+            @Model.StartDate
+        </div>
+        <div class="col-6 d-block d-md-none">End Date</div>
+        <div class="col-6 col-md-2 small">
+            @if (Model.EndDate.HasValue)
+            {
+                @Model.EndDate
+            }
+        </div>
     </div>
-    <div class="col-6 d-block d-md-none">Reporter</div>
-    <div class="col-6 col-md-2">
-        @if (Model.Reporter != null)
-        {
-            @Model.Reporter.Username
-        }
-    </div>
-    <div class="col-6 d-block d-md-none">Status</div>
-    <div class="col-6 col-md-1">
-        @Html.Partial("_TaskStatus", Model.Status)
-    </div>
-    <div class="col-6 d-block d-md-none">Description</div>
-    <div class="col-6 col-md-3 text-truncate">
-        @Model.Description
-    </div>
-    <div class="col-6 d-block d-md-none">Start Date</div>
-    <div class="col-6 col-md-2 small">
-        @Model.StartDate
-    </div>
-    <div class="col-6 d-block d-md-none">End Date</div>
-    <div class="col-6 col-md-2 small">
-        @if (Model.EndDate.HasValue)
-        {
-            @Model.EndDate
-        }
-    </div>
-    <hr />
-</div>
+</a>
