@@ -1,0 +1,63 @@
+﻿@using JiraCloneMVC.Web.Models
+@model dynamic
+
+<p>
+    @Html.ActionLink("Add New Member", "AddMember", new { id = Model.Project.Id })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th>
+            Role
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Phone
+        </th>
+        <th></th>
+    </tr>
+
+    <tr>
+        <td>
+            @Model.Organizer.UserName
+        </td>
+        <td>
+            Organizer
+        </td>
+        <td>
+            @Model.Organizer.Email
+        </td>
+        <td>
+            @Model.Organizer.PhoneNumber
+        </td>
+        <td></td>
+    </tr>
+
+    @foreach (User item in Model.Members)
+    {
+        <tr>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                Member
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.PhoneNumber
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+

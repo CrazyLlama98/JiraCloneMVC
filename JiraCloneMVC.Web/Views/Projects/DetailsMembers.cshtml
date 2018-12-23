@@ -1,0 +1,18 @@
+﻿
+@using JiraCloneMVC.Web.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "DetailsMembers";
+}
+
+<h2>Project members</h2>
+
+@if (ViewBag.Rol.ToString().Equals("Organizator"))
+{
+    @Html.Partial("DetailsMembersForOrganizerAndAdmin");
+}
+else
+{
+    @Html.Partial("DetailsMembersForMembers");
+}

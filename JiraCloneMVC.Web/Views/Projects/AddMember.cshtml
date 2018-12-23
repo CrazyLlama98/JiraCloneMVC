@@ -1,0 +1,99 @@
+﻿@using JiraCloneMVC.Web.Models
+@model dynamic
+@{
+    ViewBag.Title = "AddMember";
+}
+
+<h2>Add Member</h2>
+
+<h3>Project Info</h3>
+<table class="table">
+    <tr>
+        <th>
+            Organizer Name
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            StartDate
+        </th>
+        <th>
+            EndDate
+        </th>
+        <th></th>
+    </tr>
+
+    <tr>
+        <td>
+            <i class="glyphicon glyphicon-user"></i>@Model.Organizer.UserName
+        </td>
+        <td>
+            @Model.Project.Name
+        </td>
+        <td>
+            @Model.Project.Description
+        </td>
+        <td>
+            @Model.Project.Status
+        </td>
+        <td>
+            @Model.Project.StartDate
+        </td>
+        <td>
+            @Model.Project.EndDate
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Project.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = Model.Project.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Project.Id })
+        </td>
+    </tr>
+
+</table>
+
+
+<h3>Add member</h3>
+<table class="table">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Phone
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (User item in Model.Users)
+    {
+        <tr>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.PhoneNumber
+            </td>
+            <td>
+                <button class="btn">Add</button>
+                <!-- Aici trebuie sa trimit in controler, in metoda de la linia 165, informatiile: item.Id si Model.Project.Id-->
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
