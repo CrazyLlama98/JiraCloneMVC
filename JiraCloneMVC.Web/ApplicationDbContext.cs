@@ -8,6 +8,7 @@ namespace JiraCloneMVC.Web
     {
         public DbSet<Group> Groups { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -19,13 +20,12 @@ namespace JiraCloneMVC.Web
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Task>().HasOptional(t => t.Reporter).WithMany().HasForeignKey(t => t.ReporterId);
             modelBuilder.Entity<Task>().HasOptional(t => t.Assignee).WithMany().HasForeignKey(t => t.AssigneeId);
+            modelBuilder.Entity<Task>().HasOptional(t => t.Project).WithMany(p => p.Tasks).HasForeignKey(t => t.ProjectId);
         }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<JiraCloneMVC.Web.Models.Project> Projects { get; set; }
     }
 }

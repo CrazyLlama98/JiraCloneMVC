@@ -12,7 +12,7 @@ namespace JiraCloneMVC.Web.Models
         public DateTime? EndDate { get; set; }
 
         public int? ProjectId { get; set; }
-        //TODO: Project class
+        public Project Project { get; set; }
         public string AssigneeId { get; set; }
         public User Assignee { get; set; }
         public string ReporterId { get; set; }
