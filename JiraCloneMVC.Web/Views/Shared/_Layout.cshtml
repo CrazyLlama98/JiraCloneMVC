@@ -7,10 +7,11 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Site.css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 <body>
-    <div class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <!-- Navbar (sit on top) -->
         <button type="button" class="navbar-toggler" data-toggle="collapse" aria-expanded="false" data-target=".navbar-collapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -23,17 +24,18 @@
             @Html.Partial("_LoginPartial");
         </div>
     </div>
+
     <div class="container body-content mt-5">
-        <!-- Body container -->
-        @RenderBody()
+    <!-- Body container -->
+    @RenderBody()
 
         <footer class="mt-4">
-            <p>&copy; @DateTime.Now.Year - MR Mange Application </p>
+        <p>&copy; @DateTime.Now.Year - MR Mange Application </p>
         </footer>
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", false)
+    @RenderSection("scripts", false)
     </div>
 </body>
 </html>

@@ -77,7 +77,6 @@ a {
 .navbar-subcontainer a { text-decoration: none; }
 
 .navbar-subcontainer .navbar-element {
-    border: none;
     display: block;
     float: left;
     outline: 0;
@@ -121,8 +120,11 @@ a {
     user-select: none
 }
 
+.menu-list {
+    flex-direction: row !important;
+}
+
 .navbar-list {
-    display: none !important;
     float: right !important;
 }
 
@@ -140,8 +142,6 @@ a {
     width: 100%;
     z-index: 1;
 }
-
-/***************/
 
 /*   FOOTER    */
 
@@ -333,4 +333,92 @@ a.tile-link:hover {
 
 .task-description {
     white-space: pre-line
+    opacity: .75;
+    padding: 1.032rem 1rem;
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+    text-align: center;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+a:hover.home-contact-header-button {
+    color: #fff;
+    opacity: .9;
+    text-decoration: none !important;
+}
+
+.home-contact-section1 {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 0 !important;
+    padding-top: 4.5rem;
+    position: relative;
+    text-align: left;
+}
+
+.home-contact-form-container {
+    background-color: #f3f8fc !important;
+    color: #1a1e2c;
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 400;
+    height: 500px;
+    line-height: 1.5;
+    margin: 0;
+    min-height: 1px;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+}
+
+.home-contact-form-content {
+    -ms-flex-wrap: wrap;
+    align-items: center !important;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100% !important;
+    padding-left: -15%
+}
+
+#section-1 { transform: translateY(5px) }
+
+.home-contact-form {
+    display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    margin-top: 0;
+    max-width: 100%;
+    min-height: 1px;
+    padding-bottom: 4.5rem !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+    padding-top: 4.5rem !important;
+    position: relative;
+    width: 100%;
+}
+
+form.home-contact-form div {
+    box-sizing: border-box;
+    display: block;
+    margin-bottom: 1.5rem !important;
+    width: 100%
+}
+
+form.home-contact-form div input, form.home-contact-form div textarea {
+    background-color: #fff;
+    border: 1px solid #cdced3;
+    color: #343a40;
+    display: block;
+    max-width: 100% !important;
+    padding: .8rem .75rem;
+    width: 100%;
 }
