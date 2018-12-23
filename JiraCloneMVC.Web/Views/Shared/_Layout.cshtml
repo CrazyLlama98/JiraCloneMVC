@@ -11,31 +11,29 @@
 
 </head>
 <body>
-    <!-- Navbar (sit on top) -->
-        <button type="button" class="navbar-toggler" data-toggle="collapse" aria-expanded="false" data-target=".navbar-collapse">
+    <div class="navbar navbar-expand-md fixed-top bg-white navbar-light p-0 shadow">
+        <button type="button" class="navbar-toggler p-1 mt-2 mx-2" data-toggle="collapse" aria-expanded="false" data-target=".navbar-collapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse bg-white p-0">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @class = "navbar-buttons nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, htmlAttributes: new { @class = "navbar-buttons nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, htmlAttributes: new { @class = "navbar-buttons nav-link" })</li>
             </ul>
-            @Html.Partial("_LoginPartial");
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
 
-    <div class="container body-content mt-5">
     <!-- Body container -->
     @RenderBody()
 
-        <footer class="mt-4">
+    <footer class="mt-4">
         <p>&copy; @DateTime.Now.Year - MR Mange Application </p>
-        </footer>
+    </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", false)
-    </div>
 </body>
 </html>

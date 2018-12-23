@@ -6,19 +6,28 @@ html {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     overflow-x: hidden;
-    position: relative;
+    height: 100%;
 }
 
 body {
     margin: 0;
     padding: 0;
     padding-top: 50px;
+    position: relative;
+    min-height: 100%;
 }
+
+body::after {
+    content: '';
+    display: block;
+    height: 8em; 
+}
+
 
 html, body {
     font-family: Verdana, sans-serif;
     font-size: 15px;
-    line-height: 1.5
+    line-height: 1.5;
 }
 
 h1 { font-size: 36px }
@@ -91,13 +100,13 @@ a {
     cursor: pointer;
     display: inline-block;
     font-family: Verdana, sans-serif;
-    font-size: 15px;
     line-height: 1.5;
+    font-size: 1.15em;
     overflow: hidden;
-    padding: 8px 16px !important;
+    padding: 1.25em 1.75em !important;
     text-align: center;
-    text-decoration: none;
     vertical-align: middle;
+    letter-spacing: 0.2em;
     white-space: nowrap;
 }
 
@@ -109,6 +118,7 @@ a {
 .navbar-buttons:hover {
     background-color: #ccc !important;
     color: #000 !important;
+    text-decoration: none;
 }
 
 .navbar-buttons {
@@ -143,6 +153,13 @@ a {
     z-index: 1;
 }
 
+@media screen and (max-width: 767px) {
+    .navbar-buttons {
+        width: 100%;
+        text-align: left;
+    }
+}
+
 /*   FOOTER    */
 
 /***************/
@@ -153,11 +170,12 @@ footer {
     padding: 2em 0;
     text-align: center !important;
     position: absolute;
-    bottom: -10em;
+    bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
     clear: both;
+    height: 8em;
 }
 
 /*******************************/
