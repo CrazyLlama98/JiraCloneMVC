@@ -1,4 +1,5 @@
-﻿using JiraCloneMVC.Web.Models;
+﻿using JiraCloneMVC.Web.Attributes;
+using JiraCloneMVC.Web.Models;
 using JiraCloneMVC.Web.Repositories;
 using JiraCloneMVC.Web.Repositories.Interfaces;
 using JiraCloneMVC.Web.ViewModels;
@@ -62,6 +63,7 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         [Route("Create")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
         public ActionResult Create(int? projectId)
         {
             if (!projectId.HasValue)
@@ -70,6 +72,7 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         [Route("Create")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(int? projectId, CreateTaskViewModel newTask)
