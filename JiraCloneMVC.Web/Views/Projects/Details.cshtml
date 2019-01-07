@@ -62,7 +62,7 @@
     </dl>
 </div>
 
-@if (ViewBag.Rol.ToString().Equals("Organizator"))
+@if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
 {
     @Html.Partial("DetailsForOrganizerAndAdmin");
 }

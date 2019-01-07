@@ -8,7 +8,7 @@
 
 <h2>Project members</h2>
 
-@if (ViewBag.Rol.ToString().Equals("Organizator"))
+@if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
 {
     @Html.Partial("DetailsMembersForOrganizerAndAdmin");
 }

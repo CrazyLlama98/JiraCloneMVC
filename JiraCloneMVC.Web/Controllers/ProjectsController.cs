@@ -14,7 +14,7 @@ namespace JiraCloneMVC.Web.Controllers
 {
     public class ProjectsController : Controller
     {
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
         public ActionResult Index()
@@ -67,6 +67,9 @@ namespace JiraCloneMVC.Web.Controllers
             if (project.OrganizerId == User.Identity.GetUserId())
                 ViewBag.Rol = "Organizator";
 
+            if (User.IsInRole("Administrator"))
+                ViewBag.Rol = "Administrator";
+
             return View(project);
         }
 
@@ -95,6 +98,9 @@ namespace JiraCloneMVC.Web.Controllers
             ViewBag.Rol = "Member";
             if (project.OrganizerId == User.Identity.GetUserId())
                 ViewBag.Rol = "Organizator";
+
+            if (User.IsInRole("Administrator"))
+                ViewBag.Rol = "Administrator";
 
             return View(mymodel);
         }
@@ -209,7 +215,7 @@ namespace JiraCloneMVC.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize(Roles = "Organizator,Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,Status,StartDate,EndDate")]
+        public ActionResult Edit([Bind(Include = "Id,OrganizerId,Name,Description,Status,StartDate,EndDate")]
             Project project)
         {
             if (ModelState.IsValid)

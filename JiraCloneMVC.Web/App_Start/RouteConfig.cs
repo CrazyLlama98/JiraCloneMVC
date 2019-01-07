@@ -19,6 +19,12 @@ namespace JiraCloneMVC.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "IndexAdmin",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
+            );
         }
     }
 }
