@@ -1,4 +1,5 @@
-﻿@using JiraCloneMVC.Web.Models
+﻿
+@using JiraCloneMVC.Web.Models
 @model dynamic
 @{
     ViewBag.Title = "AddMember";
@@ -87,8 +88,12 @@
                 @item.PhoneNumber
             </td>
             <td>
-                <button class="btn">Add</button>
-                <!-- Aici trebuie sa trimit in controler, in metoda de la linia 165, informatiile: item.Id si Model.Project.Id-->
+                <form method="post" action="/Projects/AddMember">
+                    @Html.AntiForgeryToken()
+                    <input id="idProj" name="idProj" type="text" value="@Model.Project.Id" style="display: none"/>
+                    <input id="idUser" name="idUser" type="text" value="@item.Id" style="display: none"/>
+                    <input type="submit" value="Add" class="btn"/>
+                </form>
             </td>
         </tr>
     }

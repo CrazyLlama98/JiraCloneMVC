@@ -162,7 +162,7 @@ namespace JiraCloneMVC.Web.Controllers
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddMember( int? idProj, int? idUser)
+        public ActionResult AddMember( int? idProj, string idUser)
         {
 
             if (idProj == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -184,7 +184,7 @@ namespace JiraCloneMVC.Web.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("AddMember");
+            return RedirectToAction("DetailsMembers", new {id = idProj});
         }
 
         // GET: Projects/Edit/5
@@ -277,9 +277,28 @@ namespace JiraCloneMVC.Web.Controllers
         [ActionName("DeleteMember")]
         [ValidateAntiForgeryToken]
         //[Authorize(Roles = "Organizator,Administrator")]
-        public ActionResult DeleteMember(int id)
+        public ActionResult DeleteMember(string userId, int? projId)
         {
-            return RedirectToAction("Index");
+            if (userId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (projId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Group gr = null;
+
+            foreach (var grup in db.Groups.ToList())
+            {
+                if (grup.UserId == userId && grup.ProjectId == projId)
+                {
+                    gr = grup;
+                    break;
+                }
+
+            }
+            if (gr == null) return HttpNotFound();
+
+            db.Groups.Remove(gr);
+            db.SaveChanges();
+
+            return RedirectToAction("DetailsMembers", new { id = projId });
         }
     }
 }

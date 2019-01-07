@@ -54,7 +54,15 @@
                 @item.PhoneNumber
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <form method="post" action="/Projects/DeleteMember">
+                    @Html.AntiForgeryToken()
+                    <input name="userId" value=@item.Id style="display: none" />
+                    <input name ="projId" value = @Model.Project.Id style="display: none"/>
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-default" /> |
+                        @Html.ActionLink("Back to List", "Index")
+                    </div>
+                </form>
             </td>
         </tr>
     }
