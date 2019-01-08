@@ -22,108 +22,49 @@
         <div class="col-md-2">End Date</div>
     </div>
     <hr class="d-none d-md-block" />
-    @Html.Partial("_ProjectAdministrateDetailsPreview", (Project) Model.Project)
+    @Html.Partial("_ProjectAdministrateDetailsPreview", (Project)Model.Project)
 
-</div>
-
-
-
-
-
-<h2>Add Member</h2>
-
-<h3>Project Info</h3>
-<table class="table">
-    <tr>
-        <th>
-            Organizer Name
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            StartDate
-        </th>
-        <th>
-            EndDate
-        </th>
-        <th></th>
-    </tr>
-
-    <tr>
-        <td>
-            <i class="glyphicon glyphicon-user"></i>@Model.Organizer.UserName
-        </td>
-        <td>
-            @Model.Project.Name
-        </td>
-        <td>
-            @Model.Project.Description
-        </td>
-        <td>
-            @Model.Project.Status
-        </td>
-        <td>
-            @Model.Project.StartDate
-        </td>
-        <td>
-            @Model.Project.EndDate
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Project.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = Model.Project.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = Model.Project.Id })
-        </td>
-    </tr>
-
-</table>
-
-
-<h3>Add member</h3>
-<table class="table">
-    <tr>
-        <th>
-            User Name
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Phone
-        </th>
-        <th></th>
-    </tr>
-
+    <h3>Add member</h3>
+    
+    <div class="row d-none d-md-flex text-cen">
+        <div class="col-md-2">User Name</div>
+        <div class="col-md-1">Email</div>
+        <div class="col-md-3">Phone</div>
+        <div class="col-md-3">Add Button</div>
+    </div>
+    <hr class="d-none d-md-block" />
+    
     @foreach (User item in Model.Users)
     {
-        <tr>
-            <td>
-                @item.UserName
-            </td>
-            <td>
-                @item.Email
-            </td>
-            <td>
-                @item.PhoneNumber
-            </td>
-            <td>
-                <form method="post" action="/Projects/AddMember">
-                    @Html.AntiForgeryToken()
-                    <input id="idProj" name="idProj" type="text" value="@Model.Project.Id" style="display: none" />
-                    <input id="idUser" name="idUser" type="text" value="@item.Id" style="display: none" />
-                    <input type="submit" value="Add" class="btn" />
-                </form>
-            </td>
-        </tr>
+
+        <div class="card shadow-lg tile-link mb-2">
+            <div class="row card-body">
+                <div class="col-6 d-block d-md-none">Reporter</div>
+                <div class="col-6 col-md-2">
+                    @item.UserName
+                </div>
+                <div class="col-6 d-block d-md-none">Description</div>
+                <div class="col-6 col-md-3 text-truncate">
+                    @item.Email
+                </div>
+                <div class="col-6 d-block d-md-none">Status</div>
+                <div class="col-6 col-md-1">
+                    @item.PhoneNumber
+                </div>
+
+                <div class="col-6 d-block d-md-none">Add</div>
+                <div class="col-6 col-md-1">
+                    <form method="post" action="/Projects/AddMember">
+                        @Html.AntiForgeryToken()
+                        <input id="idProj" name="idProj" type="text" value="@Model.Project.Id" style="display: none" />
+                        <input id="idUser" name="idUser" type="text" value="@item.Id" style="display: none" />
+                        <input type="submit" value="Add" class="btn btn-dark" />
+                    </form>
+                </div>
+            </div>
+        </div>
     }
 
-</table>
-
+</div>
 
 
