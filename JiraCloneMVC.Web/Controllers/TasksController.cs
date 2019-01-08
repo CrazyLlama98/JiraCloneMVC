@@ -5,6 +5,7 @@ using JiraCloneMVC.Web.Repositories.Interfaces;
 using JiraCloneMVC.Web.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -63,37 +64,67 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         [Route("Create")]
-        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
         public ActionResult Create(int? projectId)
         {
             if (!projectId.HasValue)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            return View("CreateTask");
+
+            ApplicationDbContext db = new ApplicationDbContext();
+            var project = db.Projects.Find(projectId);
+            if (project == null) return HttpNotFound();
+
+            if (project.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                return View("CreateTask");
+            }
+
+            return RedirectToRoute(
+                new
+                {
+                    controller = "Account",
+                    action = "Login"
+                });
         }
 
         [Route("Create")]
-        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(int? projectId, CreateTaskViewModel newTask)
         {
             if (!projectId.HasValue)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            if (ModelState.IsValid)
+
+            ApplicationDbContext db = new ApplicationDbContext();
+            var project = db.Projects.Find(projectId);
+            if (project == null) return HttpNotFound();
+
+            if (project.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
-                var task = new Task
+
+                if (ModelState.IsValid)
                 {
-                    Description = newTask.Description,
-                    ReporterId = User.Identity.GetUserId(),
-                    ProjectId = projectId.Value,
-                    Status = Constants.TaskStatus.ToDo,
-                    Title = newTask.Title,
-                    StartDate = DateTime.Now
-                };
-                _taskRepository.Add(task);
-                return RedirectToAction("Index");
+                    var task = new Task
+                    {
+                        Description = newTask.Description,
+                        ReporterId = User.Identity.GetUserId(),
+                        ProjectId = projectId.Value,
+                        Status = Constants.TaskStatus.ToDo,
+                        Title = newTask.Title,
+                        StartDate = DateTime.Now
+                    };
+                    _taskRepository.Add(task);
+                    return RedirectToAction("Index");
+                }
+
+                return View("CreateTask");
             }
-            return View("CreateTask");
+
+            return RedirectToRoute(
+                new
+                {
+                    controller = "Account",
+                    action = "Login"
+                });
         }
     }
 }
