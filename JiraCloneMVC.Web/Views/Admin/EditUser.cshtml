@@ -3,35 +3,36 @@
     ViewBag.Title = "EditUser";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container my-5">
+    <h2>Edit User</h2>
 
-<h2>Edit User</h2>
+    <form method="post" action="/Admin/EditUser">
 
-<form method="post" action="/Admin/EditUser">
-
-    @Html.HttpMethodOverride(HttpVerbs.Put)
-    @Html.HiddenFor(m => m.Id)
-    <br />
-    <i class="glyphicon glyphicon-user"></i>
-    @Html.Label("UserName", "Name", new { @class = "" })
-    <br />
-    @Html.EditorFor(m => m.UserName)
-    <br />
-    <br />
-    <i class="glyphicon glyphicon-envelope"></i>
-    @Html.Label("Email", "Email", new { @class = "" })
-    <br />
-    @Html.EditorFor(m => m.Email)
-    <br />
-    <br />
-    <i class="glyphicon glyphicon-phone"></i>
-    @Html.Label("PhoneNumber", "Phone Number")
-    <br />
-    @Html.EditorFor(m => m.PhoneNumber)
-    <br />
-    <br />
-    <button class="btn btn-sm btn-success" type="submit"> Submit </button>
-</form>
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.HiddenFor(m => m.Id)
+        <br />
+        <i class="glyphicon glyphicon-user"></i>
+        @Html.Label("UserName", "Name", new { @class = "" })
+        <br />
+        @Html.EditorFor(m => m.UserName)
+        <br />
+        <br />
+        <i class="glyphicon glyphicon-envelope"></i>
+        @Html.Label("Email", "Email", new { @class = "" })
+        <br />
+        @Html.EditorFor(m => m.Email)
+        <br />
+        <br />
+        <i class="glyphicon glyphicon-phone"></i>
+        @Html.Label("PhoneNumber", "Phone Number")
+        <br />
+        @Html.EditorFor(m => m.PhoneNumber)
+        <br />
+        <br />
+        <button class="btn btn-sm btn-success" type="submit"> Submit </button>
+    </form>
 
     <div>
         @Html.ActionLink("Back to List", "SeeUsers")
+    </div>
     </div>

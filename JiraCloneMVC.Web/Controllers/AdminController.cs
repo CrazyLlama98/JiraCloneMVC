@@ -69,7 +69,19 @@ namespace JiraCloneMVC.Web.Controllers
             var user = db.Users.Find(id);
             if (user == null) return HttpNotFound();
 
-            return View(user);
+            int NumberOfProjects = 0;
+
+            foreach (var proj in db.Projects.ToList())
+            {
+                if (proj.OrganizerId.Equals(user.Id))
+                    NumberOfProjects++;
+            }
+
+            dynamic mymodel = new ExpandoObject();
+            mymodel.User = user;
+            mymodel.NumberOfProjects = NumberOfProjects;
+
+            return View(mymodel);
         }
 
         // POST: Projects/Delete/5
@@ -102,6 +114,11 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         public ActionResult SeeComments()
+        {
+            return null;
+        }
+
+        public ActionResult SwitchOrganizator(int? id)
         {
             return null;
         }

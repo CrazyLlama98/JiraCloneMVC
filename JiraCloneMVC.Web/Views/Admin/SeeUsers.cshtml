@@ -3,51 +3,52 @@
     ViewBag.Title = "See Users";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container my-5">
+    <h2>SeeUsers</h2>
 
-<h2>SeeUsers</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Phone
+            </th>
+            <th></th>
+        </tr>
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Phone
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var user in ViewBag.UsersList)
+        {
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-user"></i>@user.UserName
+                </td>
+                <td>
+                    @user.Email
+                </td>
+                <td>
+                    @if (@user.PhoneNumber != null)
+                    {
+                        <i class="glyphicon glyphicon-phone"></i>@user.PhoneNumber
+                    }
+                    else
+                    {
+                        @:-
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-success" href="/Admin/EditUser/@user.Id">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-danger" href="/Admin/DeleteUser/@user.Id">Delete</a>
+                </td>
+            </tr>
+        }
 
-    @foreach (var user in ViewBag.UsersList)
-    {
-    <tr>
-        <td>
-            <i class="glyphicon glyphicon-user"></i>@user.UserName
-        </td>
-        <td>
-            @user.Email
-        </td>
-        <td>
-            @if (@user.PhoneNumber != null)
-            {
-                <i class="glyphicon glyphicon-phone"></i>@user.PhoneNumber
-            }
-            else
-            {
-                @:-
-            }
-        </td>
-        <td>
-            <a class="btn btn-sm btn-success" href="/Admin/EditUser/@user.Id">Edit</a>
-        </td>
-        <td>
-            <a class="btn btn-sm btn-danger" href="/Admin/DeleteUser/@user.Id">Delete</a>
-        </td>
-    </tr>
-    }
+    </table>
 
-</table>
-
-<a href="/Admin/Index" class="btn btn-primary">Back</a>
+    <a href="/Admin/Index" class="btn btn-primary">Back</a>
+    </div>
