@@ -1,9 +1,34 @@
-﻿
-@using JiraCloneMVC.Web.Models
+﻿@using JiraCloneMVC.Web.Models
+@using JiraCloneMVC.Web.ViewModels
 @model dynamic
+
 @{
-    ViewBag.Title = "AddMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+<div class="container my-5">
+    <h3 class="alert-danger">@ViewBag.message</h3>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <h2>Project Info</h2>
+    <div class="row d-none d-md-flex text-cen">
+        <div class="col-md-2">Organizer Name</div>
+        <div class="col-md-2">Name</div>
+        <div class="col-md-1">Description</div>
+        <div class="col-md-3">Status</div>
+        <div class="col-md-2">Start Date</div>
+        <div class="col-md-2">End Date</div>
+    </div>
+    <hr class="d-none d-md-block" />
+    @Html.Partial("_ProjectAdministrateDetailsPreview", (Project) Model.Project)
+
+</div>
+
+
+
+
 
 <h2>Add Member</h2>
 
@@ -90,9 +115,9 @@
             <td>
                 <form method="post" action="/Projects/AddMember">
                     @Html.AntiForgeryToken()
-                    <input id="idProj" name="idProj" type="text" value="@Model.Project.Id" style="display: none"/>
-                    <input id="idUser" name="idUser" type="text" value="@item.Id" style="display: none"/>
-                    <input type="submit" value="Add" class="btn"/>
+                    <input id="idProj" name="idProj" type="text" value="@Model.Project.Id" style="display: none" />
+                    <input id="idUser" name="idUser" type="text" value="@item.Id" style="display: none" />
+                    <input type="submit" value="Add" class="btn" />
                 </form>
             </td>
         </tr>

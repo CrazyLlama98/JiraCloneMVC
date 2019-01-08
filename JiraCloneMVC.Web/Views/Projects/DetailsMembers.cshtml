@@ -1,18 +1,19 @@
-﻿
-@using JiraCloneMVC.Web.Models
+﻿@using JiraCloneMVC.Web.Models
+@using JiraCloneMVC.Web.ViewModels
 @model dynamic
 
 @{
-    ViewBag.Title = "DetailsMembers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container my-5">
+    <h2>Project members</h2>
 
-<h2>Project members</h2>
-
-@if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
-{
-    @Html.Partial("DetailsMembersForOrganizerAndAdmin");
-}
-else
-{
-    @Html.Partial("DetailsMembersForMembers");
-}
+    @if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
+    {
+        @Html.Partial("DetailsMembersForOrganizerAndAdmin");
+    }
+    else
+    {
+        @Html.Partial("DetailsMembersForMembers");
+    }
+</div>

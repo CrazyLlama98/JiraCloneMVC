@@ -318,6 +318,11 @@
     <Content Include="Views\Admin\EditUser.cshtml" />
     <Content Include="Views\Admin\DeleteUser.cshtml" />
     <Content Include="Views\Admin\SeeProjects.cshtml" />
+    <Content Include="Views\Projects\_ProjectStatus.cshtml" />
+    <Content Include="Views\Projects\_ProjectAdministrateDetailsPreview.cshtml" />
+    <Content Include="Views\Projects\_ProjectNonAdministrateDetailsPreview.cshtml" />
+    <Content Include="Views\Projects\_UserMemberInfo.cshtml" />
+    <Content Include="Views\Projects\_UserOrganizerInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,56 +1,19 @@
 ﻿@using JiraCloneMVC.Web.Models
-@model dynamic
 
-<table class="table">
-    <tr>
-        <th>
-            User Name
-        </th>
-        <th>
-            Role
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Phone
-        </th>
-        <th></th>
-    </tr>
+<div class="row d-none d-md-flex text-cen">
+    <div class="col-md-2">User Name</div>
+    <div class="col-md-2">Role</div>
+    <div class="col-md-1">Email</div>
+    <div class="col-md-3">Phone</div>
+</div>
+<hr class="d-none d-md-block" />
 
-    <tr>
-        <td>
-            @Model.Organizer.UserName
-        </td>
-        <td>
-            Organizer
-        </td>
-        <td>
-            @Model.Organizer.Email
-        </td>
-        <td>
-            @Model.Organizer.PhoneNumber
-        </td>
-    </tr>
 
-    @foreach (User item in Model.Members)
-    {
-        <tr>
-            <td>
-                @item.UserName
-            </td>
-            <td>
-                Member
-            </td>
-            <td>
-                @item.Email
-            </td>
-            <td>
-                @item.PhoneNumber
-            </td>
-        </tr>
-    }
+@Html.Partial("_UserOrganizerInfo", (User) Model.Organizer)
 
-</table>
+@foreach (User item in Model.Members)
+{
+    @Html.Partial("_UserMemberInfo", item)
+}
 
 
