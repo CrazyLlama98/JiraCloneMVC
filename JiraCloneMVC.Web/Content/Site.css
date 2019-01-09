@@ -17,12 +17,6 @@ body {
     min-height: 100%;
 }
 
-body::after {
-    content: '';
-    display: block;
-    height: 8em; 
-}
-
 
 html, body {
     font-family: Verdana, sans-serif;
@@ -160,23 +154,6 @@ a {
     }
 }
 
-/*   FOOTER    */
-
-/***************/
-
-footer {
-    background-color: #000 !important;
-    color: #fff !important;
-    padding: 2em 0;
-    text-align: center !important;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    clear: both;
-    height: 8em;
-}
 
 /*******************************/
 
@@ -204,8 +181,10 @@ header.home-index-header {
     flex-wrap: wrap;
     height: auto;
     max-width: 100%;
+    min-width: 100% !important;
     min-height: 50vh;
     vertical-align: middle;
+    margin: 0 !important;
 }
 
 .home-index-header-title-container {
@@ -297,6 +276,7 @@ span.home-index-header-title { color: #f1f1f1 !important }
 }
 
 .home-index-last-grid {
+    margin: 0 !important;
     display: inline-block;
     height: auto !important;
     overflow: hidden;
