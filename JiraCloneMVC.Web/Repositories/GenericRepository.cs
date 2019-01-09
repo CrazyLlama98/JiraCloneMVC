@@ -53,12 +53,10 @@ namespace JiraCloneMVC.Web.Repositories
             return Entries.Find(id);
         }
 
-        public void Update(object id, T entry)
+        public void Update(T entry)
         {
-            var entryToUpdate = Entries.Find(id);
-            if (entryToUpdate == null)
-                throw new EntryNotFoundException($"Entry of type {nameof(T)} with id = {id} was not found!");
-            DbContext.Entry(entryToUpdate).CurrentValues.SetValues(entry);
+            DbContext.Set<T>().Attach(entry);
+            DbContext.Entry(entry).State = EntityState.Modified;
             DbContext.SaveChanges();
         }
 

@@ -350,17 +350,7 @@ a.tile-link:hover {
 }
 
 .task-description {
-    white-space: pre-line
-    opacity: .75;
-    padding: 1.032rem 1rem;
-    padding-left: 25px !important;
-    padding-right: 25px !important;
-    text-align: center;
-    text-decoration: none !important;
-    text-transform: uppercase;
-    user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
+    white-space: pre-wrap;
 }
 
 a:hover.home-contact-header-button {

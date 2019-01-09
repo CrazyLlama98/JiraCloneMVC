@@ -13,7 +13,7 @@ namespace JiraCloneMVC.Web.Repositories
 
         public IEnumerable<string> GetProjectRolesOfUser(string userId, int projectId)
         {
-            return Entries.Include("Role").Where(g => g.ProjectId == projectId && g.UserId.Equals(userId)).Select(g => g.Role.Id).AsEnumerable();
+            return Entries.Include("Role").Where(g => g.ProjectId == projectId && g.UserId.Equals(userId)).Select(g => g.Role.Name).AsEnumerable();
         }
     }
 }

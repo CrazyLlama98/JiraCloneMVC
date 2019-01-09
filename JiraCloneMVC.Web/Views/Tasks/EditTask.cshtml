@@ -8,9 +8,10 @@
     <div class="row justify-content-center">
         <div class="col-10 col-md-8 col-lg-6 card">
             <div id="createTaskForm" class="card-body">
-                <h3 class="card-title">Create a new task</h3>
-                @using (Html.BeginForm("Create", "Tasks", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                <h3 class="card-title">Edit task</h3>
+                @using (Html.BeginForm("Update", "Tasks", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
+                    @Html.HttpMethodOverride(HttpVerbs.Put)
                     @Html.AntiForgeryToken()
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -25,11 +26,11 @@
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(m => m.AssigneeId, new { @class = "col-10 col-md-7 col-lg-6 control-label" })
+                        @Html.LabelFor(m => m.AssigneeId, "Assignee", new { @class = "col-10 col-md-7 col-lg-6 control-label" })
                         @Html.DropDownListFor(m => m.AssigneeId, new SelectList(ViewBag.Users, "Id", "UserName"), "- Select an assignee -", new { @class = "form-control col-10 col-lg-8" })
                     </div>
                     <div class="form-group col-4 col-md-2 text-center">
-                        <input type="submit" value="Create Task" class="btn btn-default" />
+                        <input type="submit" value="Submit" class="btn btn-default" />
                     </div>
                 }
             </div>

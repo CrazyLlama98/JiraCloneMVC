@@ -5,6 +5,7 @@ using JiraCloneMVC.Web.Repositories.Interfaces;
 using JiraCloneMVC.Web.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -15,10 +16,14 @@ namespace JiraCloneMVC.Web.Controllers
     public class TasksController : Controller
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly IProjectRepository _projectRepository;
+        private readonly IUserRepository _userRepository;
 
         public TasksController()
         {
             _taskRepository = new TaskRepository(new ApplicationDbContext());
+            _projectRepository = new ProjectRepository(new ApplicationDbContext());
+            _userRepository = new UserRepository(new ApplicationDbContext());
         }
 
         [Route]
@@ -43,11 +48,18 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         [Route("{taskId}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator,Member", ProjectIdQueryParam = "projectId")]
         public ActionResult ViewTask(int? projectId, int? taskId)
         {
             if (!projectId.HasValue || !taskId.HasValue)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var task = _taskRepository.GetById(taskId);
+            var task = _taskRepository.GetById(taskId.Value);
+            var project = _projectRepository.GetById(projectId.Value);
+            if (project.OrganizerId == User.Identity.GetUserId())
+                ViewBag.Role = "Organizator";
+            if (User.IsInRole("Administrator"))
+                ViewBag.Role = "Administrator";
+            ViewBag.AdministratorRoles = new List<string>() { "Administrator", "Organizator" };
             return View("TaskDetails", new TaskViewModel
             {
                 Assignee = task.Assignee == null ? null : new UserViewModel() { Id = task.Assignee.Id, Username = task.Assignee.UserName },
@@ -68,6 +80,7 @@ namespace JiraCloneMVC.Web.Controllers
         {
             if (!projectId.HasValue)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            ViewBag.Users = _userRepository.GetAllFromProject(projectId.Value);
             return View("CreateTask");
         }
 
@@ -88,12 +101,86 @@ namespace JiraCloneMVC.Web.Controllers
                     ProjectId = projectId.Value,
                     Status = Constants.TaskStatus.ToDo,
                     Title = newTask.Title,
-                    StartDate = DateTime.Now
+                    StartDate = DateTime.Now,
+                    AssigneeId = newTask.AssigneeId
                 };
                 _taskRepository.Add(task);
                 return RedirectToAction("Index");
             }
-            return View("CreateTask");
+            return View("CreateTask", newTask);
+        }
+
+        [Route("{taskId}/Edit")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
+        public ActionResult Edit(int? projectId, int? taskId)
+        {
+            if (!projectId.HasValue || !taskId.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var task = _taskRepository.GetById(taskId.Value);
+            if (task == null)
+                return HttpNotFound();
+            ViewBag.Users = _userRepository.GetAllFromProject(projectId.Value);
+            return View("EditTask", new CreateTaskViewModel
+            {
+                Description = task.Description,
+                Title = task.Title,
+                AssigneeId = task.AssigneeId
+            });
+        }
+
+        [Route("{taskId}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(int? projectId, int? taskId, CreateTaskViewModel model)
+        {
+            if (!projectId.HasValue || !taskId.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (ModelState.IsValid)
+            {
+                var task = _taskRepository.GetById(taskId.Value);
+                if (task == null)
+                    return HttpNotFound();
+                task.Title = model.Title;
+                task.Description = model.Description;
+                task.AssigneeId = model.AssigneeId;
+                _taskRepository.Update(task);
+                return RedirectToAction("ViewTask", new { projectId, taskId });
+            }
+            return View("EditTask", model);
+        }
+
+        [Route("{taskId}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projectId")]
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int? projectId, int? taskId)
+        {
+            if (!projectId.HasValue || !taskId.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var task = _taskRepository.GetById(taskId.Value);
+            if (task == null)
+                return HttpNotFound();
+            _taskRepository.Delete(task);
+            return RedirectToAction("Index");
+        }
+
+        [Route("{taskId}/status/{newStatus}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator,Member", ProjectIdQueryParam = "projectId")]
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditStatus(int? projectId, int? taskId, string newStatus)
+        {
+            if (!projectId.HasValue || !taskId.HasValue || string.IsNullOrEmpty(newStatus))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var task = _taskRepository.GetById(taskId.Value);
+            if (task == null)
+                return HttpNotFound();
+            task.Status = newStatus;
+            if (newStatus.Equals(Constants.TaskStatus.Done))
+                task.EndDate = DateTime.Now;
+            _taskRepository.Update(task);
+            return RedirectToAction("ViewTask", new { projectId, taskId });
         }
     }
 }
