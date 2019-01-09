@@ -47,10 +47,12 @@
                     @project.EndDate
                 </td>
                 <td>
-                    <a href="/Projects/Edit/@project.Id" class="btn btn-dark">Edit</a>
-                    <a href="/Projects/Details/@project.Id" class="btn btn-dark">Details</a>
-                    <a href="/Projects/Delete/@project.Id" class="btn btn-dark">Delete</a>
-                    <a href="/Projects/SwitchOrganizator/@project.Id" class="btn btn-dark">Org</a>
+                    <div class="btn-group">
+                        <a href="/Projects/Edit/@project.Id" class="btn btn-primary">Edit</a>
+                        <a href="/Projects/Details/@project.Id" class="btn btn-primary">Details</a>
+                        <a href="/Projects/Delete/@project.Id" class="btn btn-primary">Delete</a>
+                        <a href="/Admin/SwitchOrganizator/@project.Id" class="btn btn-primary">Change organizer</a>
+                    </div>
                 </td>
             </tr>
         }

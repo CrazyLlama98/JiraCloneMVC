@@ -59,6 +59,7 @@ namespace JiraCloneMVC.Web.Controllers
                 user.PhoneNumber = PhoneNumber;
                 db.SaveChanges();
             }
+
             return RedirectToAction("SeeUsers");
         }
 
@@ -110,7 +111,18 @@ namespace JiraCloneMVC.Web.Controllers
 
         public ActionResult SeeTasks()
         {
-            return null;
+            dynamic mymodel = new ExpandoObject();
+
+            var tasks = from task in db.Tasks
+                orderby task.Title
+                        select task;
+
+            mymodel.Tasks = tasks;
+            mymodel.Projects = db.Projects.ToList();
+            List<Project> l = db.Projects.ToList();
+            var p = l.Find(x => x.Id == 1);
+            mymodel.Users = db.Users.ToList();
+            return View(mymodel);
         }
 
         public ActionResult SeeComments()
@@ -120,7 +132,59 @@ namespace JiraCloneMVC.Web.Controllers
 
         public ActionResult SwitchOrganizator(int? id)
         {
-            return null;
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var project = db.Projects.Find(id);
+            if (project == null) return HttpNotFound();
+
+            List<User> members = new List<User>();
+            foreach (var user in db.Users.ToList())
+            {
+                foreach (var group in db.Groups.ToList())
+                {
+                    if (project.Id == group.ProjectId && group.UserId == user.Id && user.Id != project.OrganizerId)
+                        members.Add(user);
+                }
+            }
+
+            dynamic mymodel = new ExpandoObject();
+            mymodel.Project = project;
+            mymodel.Organizer = db.Users.Find(project.OrganizerId);
+            mymodel.Members = members;
+
+            return View(mymodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SwitchOrganizator(int? projId, string userId)
+        {
+            if (projId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var project = db.Projects.Find(projId);
+            if (project == null) return HttpNotFound();
+
+            if (userId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var user = db.Users.Find(userId);
+            if (user == null) return HttpNotFound();
+
+            var groupAux = from gr in db.Groups
+                where gr.UserId == userId && gr.ProjectId == projId
+                select gr;
+
+            if (groupAux.Count() != 1)
+                return HttpNotFound();
+
+            var group = groupAux.First();
+            group.RoleId = db.Roles
+                .FirstOrDefault(x => x.Name.Equals("Organizator", StringComparison.OrdinalIgnoreCase)).Id;
+
+            db.Entry(group).State = EntityState.Modified; // nu functioneaza :(
+
+            db.SaveChanges();
+
+            return RedirectToAction("SeeProjects");
         }
     }
 }
