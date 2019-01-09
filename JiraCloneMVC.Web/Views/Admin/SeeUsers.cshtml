@@ -18,6 +18,30 @@
                 Phone
             </th>
             <th></th>
+            <th></th>
+        </tr>
+        
+        <tr>
+            <td>
+                <i class="glyphicon glyphicon-user"></i>@ViewBag.Admin.UserName
+            </td>
+            <td>
+                @ViewBag.Admin.Email
+            </td>
+            <td>
+                @if (ViewBag.Admin.PhoneNumber != null)
+                {
+                    <i class="glyphicon glyphicon-phone"></i>@ViewBag.Admin.PhoneNumber
+                }
+                else
+                {
+                    @:-
+                }
+            </td>
+            <td>
+                <a class="btn btn-sm btn-success" href="/Admin/EditUser/@ViewBag.Admin.Id">Edit</a>
+            </td>
+            <td></td>
         </tr>
 
         @foreach (var user in ViewBag.UsersList)

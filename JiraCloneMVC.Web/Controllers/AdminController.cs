@@ -25,9 +25,17 @@ namespace JiraCloneMVC.Web.Controllers
 
         public ActionResult SeeUsers()
         {
+            var admins = from user in db.Users
+                where user.UserName.Equals("admin@admin.com")
+                select user;
+            User admin = admins.ToList().First();
+
             var users = from user in db.Users
                 orderby user.UserName
+                where !user.UserName.Equals("admin@admin.com")
                 select user;
+
+            ViewBag.Admin = admin;
             ViewBag.UsersList = users;
             return View();
         }
