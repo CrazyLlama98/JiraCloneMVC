@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using JiraCloneMVC.Web;
 using JiraCloneMVC.Web.Models;
+using Microsoft.AspNet.Identity;
 
 namespace JiraCloneMVC.Web.Controllers
 {
@@ -18,34 +19,22 @@ namespace JiraCloneMVC.Web.Controllers
         // GET: Comments
         public ActionResult Index()
         {
-            return View(db.Comments.ToList());
-        }
-
-        // GET: Comments/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
+            var comments = db.Comments.Include(c => c.Owner).Include(c => c.Task);
+            return View(comments.ToList());
         }
 
         // GET: Comments/Create
         public ActionResult Create()
         {
+            ViewBag.OwnerId = User.Identity.GetUserId();
+            ViewBag.TaskId = new SelectList(db.Tasks, "Id", "Title");
             return View();
         }
 
         // POST: Comments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Content")] Comment comment)
+        public ActionResult Create([Bind(Include = "Id,Content,OwnerId,TaskId")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -54,6 +43,8 @@ namespace JiraCloneMVC.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.OwnerId = User.Identity.GetUserId();
+            ViewBag.TaskId = new SelectList(db.Tasks, "Id", "Title", comment.TaskId);
             return View(comment);
         }
 
@@ -69,13 +60,15 @@ namespace JiraCloneMVC.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.OwnerId = User.Identity.GetUserId();
+            ViewBag.TaskId = new SelectList(db.Tasks, "Id", "Title", comment.TaskId);
             return View(comment);
         }
 
         // POST: Comments/Edit/5
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Content")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,Content,OwnerId,TaskId")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -83,6 +76,8 @@ namespace JiraCloneMVC.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.OwnerId = User.Identity.GetUserId();
+            ViewBag.TaskId = new SelectList(db.Tasks, "Id", "Title", comment.TaskId);
             return View(comment);
         }
 

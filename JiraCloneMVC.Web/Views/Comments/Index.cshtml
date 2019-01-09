@@ -13,6 +13,12 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Owner.ImageUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Title)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Content)
         </th>
         <th></th>
@@ -20,6 +26,12 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Owner.ImageUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Task.Title)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Content)
         </td>
