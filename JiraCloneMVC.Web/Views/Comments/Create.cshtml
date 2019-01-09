@@ -1,0 +1,29 @@
+﻿@using JiraCloneMVC.Web.ViewModels
+@model JiraCloneMVC.Web.Models.Comment
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-8 col-lg-6 card">
+            <div id="createTaskForm" class="card-body">
+                <h3 class="card-title">Create a new task</h3>
+                @using (Html.BeginForm("Create", "Comments", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.TextAreaFor(m => m.Content, new { @class = "form-control col-10 col-lg-8" })
+                        @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-4 col-md-2 text-center">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

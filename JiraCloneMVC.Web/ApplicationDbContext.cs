@@ -27,5 +27,7 @@ namespace JiraCloneMVC.Web
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<JiraCloneMVC.Web.Models.Comment> Comments { get; set; }
     }
 }
