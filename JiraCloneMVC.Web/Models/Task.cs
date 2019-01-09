@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace JiraCloneMVC.Web.Models
 {
@@ -17,5 +18,7 @@ namespace JiraCloneMVC.Web.Models
         public User Assignee { get; set; }
         public string ReporterId { get; set; }
         public User Reporter { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

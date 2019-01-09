@@ -11,6 +11,7 @@ namespace JiraCloneMVC.Web.Models
         public string ImageUrl { get; set; }
 
         public ICollection<Group> Groups { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
