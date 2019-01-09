@@ -92,6 +92,16 @@ namespace JiraCloneMVC.Web.Controllers
         {
             var user = db.Users.Find(id);
             db.Users.Remove(user);
+
+            var groups = from gr in db.Groups
+                where  gr.UserId.Equals(user.Id)
+                select gr;
+
+            foreach (var group in groups)
+            {
+                db.Groups.Remove(group);
+            }
+
             db.SaveChanges();
             return RedirectToAction("SeeUsers");
         }
@@ -123,11 +133,6 @@ namespace JiraCloneMVC.Web.Controllers
             var p = l.Find(x => x.Id == 1);
             mymodel.Users = db.Users.ToList();
             return View(mymodel);
-        }
-
-        public ActionResult SeeComments()
-        {
-            return null;
         }
 
         public ActionResult SwitchOrganizator(int? id)
@@ -185,6 +190,10 @@ namespace JiraCloneMVC.Web.Controllers
             db.SaveChanges();
 
             return RedirectToAction("SeeProjects");
+        }
+        public ActionResult SeeComments()
+        {
+            return null;
         }
     }
 }
