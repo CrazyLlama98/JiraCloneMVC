@@ -8,10 +8,16 @@
             @Model.Title
         </div>
         <div class="col-6 d-block d-md-none">Reporter</div>
-        <div class="col-6 col-md-2">
+        <div class="col-6 col-md-1">
             @if (Model.Reporter != null)
             {
                 @Model.Reporter.Username
+            }
+        </div>
+        <div class="col-6 col-md-1">
+            @if (Model.Assignee != null)
+            {
+                @Model.Assignee.Username
             }
         </div>
         <div class="col-6 d-block d-md-none">Status</div>

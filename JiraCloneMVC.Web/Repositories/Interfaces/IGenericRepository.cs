@@ -8,7 +8,7 @@ namespace JiraCloneMVC.Web.Repositories.Interfaces
     {
         void Add(T entry);
         void AddRange(IEnumerable<T> entries);
-        void Update(object id, T entry);
+        void Update(T entry);
         void Delete(T entry);
         void DeleteRange(IEnumerable<T> entries);
         IEnumerable<T> GetAll();
