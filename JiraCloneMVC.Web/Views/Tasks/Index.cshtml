@@ -5,6 +5,12 @@
 }
 
 <div class="container my-5">
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.Role) && ViewBag.AdministratorRoles.Contains(ViewBag.Role))
+        {
+            <a href="@Url.RouteUrl("createTask", new {projectId = ViewBag.ProjectId})" class="btn btn-success">New Tasks</a>
+        }
+    }
     <div class="row d-none d-md-flex text-cen">
         <div class="col-md-2">Title</div>
         <div class="col-md-1">Reporter</div>
@@ -17,11 +23,13 @@
     <hr class="d-none d-md-block" />
     @foreach (var task in Model)
     {
-        @Html.Partial("_TaskDetailsPreview", task);
+        @Html.Partial("_TaskDetailsPreview", task)
+        ;
     }
     @if (Model.Count() == 0)
     {
-        @Html.Partial("~/Views/Shared/_NoResultsPartial.cshtml");
+        @Html.Partial("~/Views/Shared/_NoResultsPartial.cshtml")
+        ;
     }
 </div>
 

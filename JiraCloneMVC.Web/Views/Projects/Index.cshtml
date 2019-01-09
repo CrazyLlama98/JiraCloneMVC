@@ -9,7 +9,7 @@
 <div class="container my-5">
     <h3 class="alert-danger">@ViewBag.message</h3>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        <a href=" @Url.Action("Create", "Projects")" class ="btn btn-info">Create New</a>
     </p>
     <h4>The projects you organize</h4>
     <div class="row d-none d-md-flex text-cen">

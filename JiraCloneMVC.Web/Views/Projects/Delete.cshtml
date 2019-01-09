@@ -40,8 +40,8 @@
                     @Html.HiddenFor(m => m.Id)
 
                     <div class="form-actions no-color">
-                        <input type="submit" value="Delete" class="btn btn-danger" /> |
-                        @Html.ActionLink("Back to List", "Index", new {@class = "btn"})
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <a href=" @Url.Action("Index", "Projects")" class="btn btn-success">Back to List</a>
                     </div>
                 }
             </div>

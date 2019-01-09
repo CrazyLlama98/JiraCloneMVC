@@ -58,9 +58,9 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        <a href="/Tasks/Edit/@task.Id" class="btn btn-primary">Edit</a>
                         <a href="@Url.Action("ViewTask", "Tasks", new { taskId = task.Id, projectId = task.ProjectId })" class="btn btn-primary">Details</a>
-                        <a href="/Tasks/Delete/@task.Id" class="btn btn-primary">Delete</a>
+                        <a href="@Url.Action("Edit", "Tasks", new { taskId = task.Id, projectId = task.ProjectId })" class="btn btn-primary">Edit</a>
+                        <a href="@Url.Action("Delete", "Tasks", new { taskId = task.Id, projectId = task.ProjectId })" class="btn btn-primary">Delete</a>
                     </div>
                 </td>
             </tr>

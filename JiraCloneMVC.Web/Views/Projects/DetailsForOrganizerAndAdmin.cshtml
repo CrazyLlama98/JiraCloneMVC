@@ -1,7 +1,9 @@
 ﻿<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
-    @Html.ActionLink("Details Members", "DetailsMembers", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.RouteUrl("goToTask", new {projectId = Model.Id})" class="btn btn-dark">See Tasks</a>
+    <a href=" @Url.Action("Edit", "Projects", new {id = Model.Id})" class="btn btn-warning">Edit</a>
+    <a href=" @Url.Action("Delete", "Projects", new {id = Model.Id})" class="btn btn-danger">Delete</a>
+    <a href=" @Url.Action("DetailsMembers", "Projects", new {id = Model.Id})" class="btn btn-info">See Members</a>
+    <a href=" @Url.Action("Index", "Projects")" class="btn btn-success">Back to List</a>
+
 </p>
 

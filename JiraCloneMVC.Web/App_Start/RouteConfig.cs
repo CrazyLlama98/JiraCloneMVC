@@ -25,6 +25,16 @@ namespace JiraCloneMVC.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "goToTask",
+                url: "projects/{projectId}/tasks"
+            );
+            
+            routes.MapRoute(
+                name: "createTask",
+                url: "projects/{projectId}/tasks/Create"
+            );
         }
     }
 }

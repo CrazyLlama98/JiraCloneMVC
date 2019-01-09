@@ -1,7 +1,7 @@
 ﻿@using JiraCloneMVC.Web.Models
 
 <p>
-    @Html.ActionLink("Add New Member", "AddMember", new { id = Model.Project.Id })
+    <a href=" @Url.Action("AddMember", "Projects", new { id = Model.Project.Id })" class="btn btn-dark">Add New Member</a>
 </p>
 
 <div class="row d-none d-md-flex text-cen">
@@ -49,6 +49,6 @@
     </div>
 }
 
-@Html.ActionLink("Back to List", "Index")
+<a href=" @Url.Action("Index", "Projects")" class="btn btn-success">Back to List</a>
 
 

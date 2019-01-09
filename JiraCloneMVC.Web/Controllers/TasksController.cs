@@ -44,6 +44,14 @@ namespace JiraCloneMVC.Web.Controllers
                     EndDate = t.EndDate,
                     ProjectId = t.ProjectId.Value
                 });
+
+            var project = _projectRepository.GetById(projectId.Value);
+            if (project.OrganizerId == User.Identity.GetUserId())
+                ViewBag.Role = "Organizator";
+            if (User.IsInRole("Administrator"))
+                ViewBag.Role = "Administrator";
+            ViewBag.AdministratorRoles = new List<string>() { "Administrator", "Organizator" };
+            ViewBag.ProjectId = projectId;
             return View(tasks);
         }
 

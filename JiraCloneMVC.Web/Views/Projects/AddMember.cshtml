@@ -10,7 +10,7 @@
 <div class="container my-5">
     <h3 class="alert-danger">@ViewBag.message</h3>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        <a href=" @Url.Action("Index", "Projects")" class="btn btn-success">Back to List</a>
     </p>
     <h2>Project Info</h2>
     <div class="row d-none d-md-flex text-cen">

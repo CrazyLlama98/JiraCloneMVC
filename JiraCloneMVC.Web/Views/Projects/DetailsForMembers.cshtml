@@ -1,4 +1,6 @@
 ﻿<p>
-    @Html.ActionLink("See Members", "DetailsMembers", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.RouteUrl("goToTask", new {projectId = Model.Id})" class="btn btn-dark">See Tasks</a>
+    <a href=" @Url.Action("DetailsMembers", "Projects", new {id = Model.Id})" class="btn btn-info">See Members</a>
+    <a href=" @Url.Action("Index", "Projects")" class="btn btn-success">Back to List</a>
+
 </p>
