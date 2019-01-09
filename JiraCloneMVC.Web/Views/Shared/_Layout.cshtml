@@ -28,9 +28,13 @@
     <!-- Body container -->
     @RenderBody()
 
-    <footer class="mt-4">
-        <p>&copy; @DateTime.Now.Year - MR Mange Application </p>
-    </footer>
+<!-- Footer -->
+<footer class="py-5 bg-dark card-footer">
+    <div class="container">
+        <p class="m-0 text-center text-white small">Copyright &copy; @DateTime.Now.Year - MR Mange Application</p>
+    </div>
+    <!-- /.container -->
+</footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
