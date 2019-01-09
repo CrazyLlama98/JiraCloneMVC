@@ -1,72 +1,48 @@
 ﻿@using System.Activities.Statements
 @model JiraCloneMVC.Web.Models.Project
-
 @{
-    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-body row justify-content-between p-4 p-lg-5">
+            <h2 class="card-title col-12 pb-2 border-bottom">@Model.Name</h2>
+            <div class="row col-11 col-md-5">
+                <div class="col-11 col-md-6">Organizer Name: </div>
+                <div class="col-11 col-md-6">
+                    @if (@ViewBag.OrganizerName != null)
+                    {
+                        @ViewBag.OrganizerName
+                    }
+                </div>
+                <div class="col-11 col-md-6">Status: </div>
+                <div class="col-11 col-md-6">
+                    @Html.Partial("_ProjectStatus", Model.Status)
+                </div>
+            </div>
+            <div class="row col-11 col-md-5">
+                <div class="col-11 col-md-6">Start Date:</div>
+                <div class="col-11 col-md-6 small">@Model.StartDate</div>
 
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Organizer Name
-        </dt>
-
-        <dd>
-            @ViewBag.OrganizerName
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-
-    </dl>
+                <div class="col-11 col-md-6">Start Date:</div>
+                <div class="col-11 col-md-6 small">@Model.EndDate</div>
+            </div>
+            <br />
+            <h4 class="col-12 border-bottom pb-2">Description</h4>
+            <div class="col-12 task-description p-2 p-md-3 border border-primary">
+                @Model.Description
+            </div>
+            <div  class="col-12 p-2 p-md-3">
+                @if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
+                {
+                    @Html.Partial("DetailsForOrganizerAndAdmin");
+                }
+                else
+                {
+                    @Html.Partial("DetailsForMembers");
+                }
+            </div>
+        </div>
+    </div>
 </div>
-
-@if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
-{
-    @Html.Partial("DetailsForOrganizerAndAdmin");
-}
-else
-{
-    @Html.Partial("DetailsForMembers");
-}

@@ -1,71 +1,54 @@
 ﻿@using JiraCloneMVC.Web.Models
-@model dynamic
 
 <p>
     @Html.ActionLink("Add New Member", "AddMember", new { id = Model.Project.Id })
 </p>
 
-<table class="table">
-    <tr>
-        <th>
-            User Name
-        </th>
-        <th>
-            Role
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Phone
-        </th>
-        <th></th>
-    </tr>
+<div class="row d-none d-md-flex text-cen">
+    <div class="col-md-2">User Name</div>
+    <div class="col-md-2">Role</div>
+    <div class="col-md-1">Email</div>
+    <div class="col-md-3">Phone</div>
+</div>
+<hr class="d-none d-md-block" />
 
-    <tr>
-        <td>
-            @Model.Organizer.UserName
-        </td>
-        <td>
-            Organizer
-        </td>
-        <td>
-            @Model.Organizer.Email
-        </td>
-        <td>
-            @Model.Organizer.PhoneNumber
-        </td>
-        <td></td>
-    </tr>
+@Html.Partial("_UserOrganizerInfo", (User)Model.Organizer)
 
-    @foreach (User item in Model.Members)
-    {
-        <tr>
-            <td>
+@foreach (User item in Model.Members)
+{
+    <div class="card shadow-lg tile-link mb-2">
+        <div class="row card-body">
+            <div class="col-6 d-block d-md-none">Reporter</div>
+            <div class="col-6 col-md-2">
                 @item.UserName
-            </td>
-            <td>
+            </div>
+            <div class="col-6 d-block d-md-none">Title</div>
+            <div class="col-6 col-md-2 text-truncate">
                 Member
-            </td>
-            <td>
+            </div>
+            <div class="col-6 d-block d-md-none">Description</div>
+            <div class="col-6 col-md-3 text-truncate">
                 @item.Email
-            </td>
-            <td>
+            </div>
+            <div class="col-6 d-block d-md-none">Status</div>
+            <div class="col-6 col-md-1">
                 @item.PhoneNumber
-            </td>
-            <td>
+            </div>
+            <div class="col-6 d-block d-md-none">Delete</div>
+            <div class="col-6 col-md-1">
                 <form method="post" action="/Projects/DeleteMember">
                     @Html.AntiForgeryToken()
                     <input name="userId" value=@item.Id style="display: none" />
-                    <input name ="projId" value = @Model.Project.Id style="display: none"/>
+                    <input name="projId" value=@Model.Project.Id style="display: none" />
                     <div class="form-actions no-color">
-                        <input type="submit" value="Delete" class="btn btn-default" /> |
-                        @Html.ActionLink("Back to List", "Index")
+                        <input type="submit" value="Delete" class="btn btn-default" />
                     </div>
                 </form>
-            </td>
-        </tr>
-    }
+            </div>
+        </div>
+    </div>
+}
 
-</table>
+@Html.ActionLink("Back to List", "Index")
+
 

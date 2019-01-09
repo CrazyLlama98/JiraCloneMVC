@@ -1,0 +1,22 @@
+﻿@using JiraCloneMVC.Web.ViewModels
+@model JiraCloneMVC.Web.Models.User
+<div class="card shadow-lg tile-link mb-2">
+    <div class="row card-body">
+        <div class="col-6 d-block d-md-none">Reporter</div>
+        <div class="col-6 col-md-2">
+            @Model.UserName
+        </div>
+        <div class="col-6 d-block d-md-none">Title</div>
+        <div class="col-6 col-md-2 text-truncate">
+            Member
+        </div>
+        <div class="col-6 d-block d-md-none">Description</div>
+        <div class="col-6 col-md-3 text-truncate">
+            @Model.Email
+        </div>
+        <div class="col-6 d-block d-md-none">Status</div>
+        <div class="col-6 col-md-1">
+            @Model.PhoneNumber
+        </div>
+    </div>
+</div>

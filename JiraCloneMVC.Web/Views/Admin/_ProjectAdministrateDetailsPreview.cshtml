@@ -1,0 +1,33 @@
+﻿@using JiraCloneMVC.Web.ViewModels
+@model JiraCloneMVC.Web.Models.Project
+<a class="card shadow-lg tile-link mb-2" href="@Url.Action("Details", "Projects", new { id = Model.Id })">
+    <div class="row card-body">
+        <div class="col-6 d-block d-md-none">Reporter</div>
+        <div class="col-6 col-md-2">
+            @if (Model.Organizer != null)
+            {
+                @Model.Organizer.UserName
+            }
+        </div>
+        <div class="col-6 d-block d-md-none">Title</div>
+        <div class="col-6 col-md-2 text-truncate">
+            @Model.Name
+        </div>
+        <div class="col-6 d-block d-md-none">Description</div>
+        <div class="col-6 col-md-3 text-truncate">
+            @Model.Description
+        </div>
+        <div class="col-6 d-block d-md-none">Status</div>
+        <div class="col-6 col-md-1">
+            @Html.Partial("_ProjectStatus", Model.Status)
+        </div>
+        <div class="col-6 d-block d-md-none">Start Date</div>
+        <div class="col-6 col-md-2 small">
+            @Model.StartDate
+        </div>
+        <div class="col-6 d-block d-md-none">End Date</div>
+        <div class="col-6 col-md-2 small">
+            @Model.EndDate
+        </div>
+    </div>
+</a>

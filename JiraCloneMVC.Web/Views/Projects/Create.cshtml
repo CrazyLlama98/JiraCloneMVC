@@ -1,73 +1,53 @@
 ﻿@model JiraCloneMVC.Web.Models.Project
-
 @{
-    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
-
-
-@using (Html.BeginForm()) 
-{
-    @Html.HiddenFor(m => m.OrganizerId)
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Project</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-8 col-lg-6 card">
+            <div id="createTaskForm" class="card-body">
+                <h3 class="card-title">Create a new project</h3>
+                @using (Html.BeginForm("Create", "Projects", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.OrganizerId)
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "col-10 col-md-7 col-lg-6 control-label" })
+                        @Html.TextAreaFor(m => m.Name, new { @class = "form-control col-10 col-lg-8" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Description, new { @class = "col-10 col-md-7 col-lg-6 control-label" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-10 col-lg-8" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Status, new { @class = "col-10 col-md-7 col-lg-6 control-label" })
+                        @Html.TextAreaFor(m => m.Status, new { @class = "form-control col-10 col-lg-8" })
+                        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.StartDate, new { @class = "col-10 col-md-7 col-lg-6 control-label" })
+                        @Html.TextAreaFor(m => m.StartDate, new { @class = "form-control col-10 col-lg-8" })
+                        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EndDate, new { @class = "col-10 col-md-7 col-lg-6 control-label" })
+                        @Html.TextAreaFor(m => m.EndDate, new { @class = "form-control col-10 col-lg-8" })
+                        @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-4 col-md-2 text-center">
+                        <input type="submit" value="Create Project" class="btn btn-default" />
+                    </div>
+                }
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div>
+                @Html.ActionLink("Back to List", "Index")
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

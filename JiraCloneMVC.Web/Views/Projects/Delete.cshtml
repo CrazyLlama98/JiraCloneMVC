@@ -1,64 +1,50 @@
 ﻿@model JiraCloneMVC.Web.Models.Project
-
 @{
-    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-body row justify-content-between p-4 p-lg-5">
+            <h2 class="card-title col-12 pb-2 border-bottom">Are you sure you want to delete this?</h2>
+            <h3 class="card-title col-12 pb-2 border-bottom">@Model.Name</h3>
+            <div class="row col-11 col-md-5">
+                <div class="col-11 col-md-6">Organizer Name: </div>
+                <div class="col-11 col-md-6">
+                    @if (@ViewBag.OrganizerName != null)
+                    {
+                        @ViewBag.OrganizerName
+                    }
+                </div>
+                <div class="col-11 col-md-6">Status: </div>
+                <div class="col-11 col-md-6">
+                    @Html.Partial("_ProjectStatus", Model.Status)
+                </div>
+            </div>
+            <div class="row col-11 col-md-5">
+                <div class="col-11 col-md-6">Start Date:</div>
+                <div class="col-11 col-md-6 small">@Model.StartDate</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+                <div class="col-11 col-md-6">Start Date:</div>
+                <div class="col-11 col-md-6 small">@Model.EndDate</div>
+            </div>
+            <br />
+            <h4 class="col-12 border-bottom pb-2">Description</h4>
+            <div class="col-12 task-description p-2 p-md-3 border border-primary">
+                @Model.Description
+            </div>
+            <div class="col-12 p-2 p-md-3">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Id)
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        @Html.ActionLink("Back to List", "Index", new {@class = "btn"})
+                    </div>
+                }
+            </div>
         </div>
-    }
+    </div>
 </div>

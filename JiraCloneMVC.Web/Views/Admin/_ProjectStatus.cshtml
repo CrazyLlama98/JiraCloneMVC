@@ -1,0 +1,15 @@
+﻿@model string
+
+@switch (Model)
+{
+    case Constants.ProjectStatus.Open:
+        <span class="badge badge-pill badge-info">@Model</span>
+        break;
+    case Constants.ProjectStatus.Closed:
+        <span class="badge badge-pill badge-success">@Model</span>
+        break;
+    default:
+        <span class="badge badge-pill badge-warning">@Model</span>
+        break;
+}
+

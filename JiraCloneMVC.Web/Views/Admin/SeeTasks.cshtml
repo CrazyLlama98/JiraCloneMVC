@@ -1,0 +1,70 @@
+﻿@using JiraCloneMVC.Web.Models
+@using JiraCloneMVC.Web.ViewModels
+@model dynamic
+@{
+    ViewBag.Title = "SeeProjects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container my-5">
+    <h2>See Projects</h2>
+
+
+    <table class="table">
+        <tr>
+            <th>
+                Project Name
+            </th>
+            <th>
+                Organizer Name
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (Task task in Model.Tasks)
+        {
+            <tr>
+                <td>
+                    @{
+                        List<Project> l = Model.Projects;
+                        var project = l.Find(x => x.Id == task.ProjectId);
+                        @project.Name
+                    }
+                </td>
+                <td>
+                    @{
+                        List<User> ll = Model.Users;
+                        var proj = l.Find(x => x.Id == task.ProjectId);
+                        var user = ll.Find(x => x.Id == proj.OrganizerId);
+                        @user.UserName
+                    }
+                </td>
+                <td>
+                    @task.Title
+                </td>
+                <td>
+                    @task.Description
+                </td>
+                <td>
+                    @task.Status
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a href="/Tasks/Edit/@task.Id" class="btn btn-primary">Edit</a>
+                        <a href="@Url.Action("ViewTask", "Tasks", new { taskId = task.Id, projectId = task.ProjectId })" class="btn btn-primary">Details</a>
+                        <a href="/Tasks/Delete/@task.Id" class="btn btn-primary">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

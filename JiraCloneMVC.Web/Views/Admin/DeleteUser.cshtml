@@ -1,48 +1,59 @@
-﻿@model JiraCloneMVC.Web.Models.User
+﻿@using JiraCloneMVC.Web.Models
+@model dynamic
 @{
     ViewBag.Title = "DeleteUser";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container my-5">
+    <h2>Delete User</h2>
 
-<h2>Delete User</h2>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Project</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                User Name
+            </dt>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
+            <dd>
+                @Model.User.UserName
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
+            <dt>
+                Email
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+            <dd>
+                @Model.User.Email
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+            <dt>
+                Phone
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
+            <dd>
+                @Model.User.PhoneNumber
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+        </dl>
+        
+        @if (Model.NumberOfProjects == 0)
+        {
+            <form method="post" action="/Admin/DeleteConfirmed/@Model.User.Id">
+                @Html.AntiForgeryToken()
 
-    </dl>
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" /> |
+                    @Html.ActionLink("Back to List", "SeeUsers")
+                </div>
+            </form>
+        }
+        else
+        {
+            <p class="btn-danger">The user is an organizer on several projects. You can not delete it. If you do, you can revoke it as an organizer</p>
+        }
 
-    <form method="post" action="/Admin/DeleteConfirmed/@Model.Id">
-        @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "SeeUsers")
-        </div>
-   </form>
+    </div>
 </div>
