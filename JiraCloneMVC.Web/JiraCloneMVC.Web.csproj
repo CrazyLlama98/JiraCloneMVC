@@ -178,7 +178,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -333,10 +332,6 @@
     <Content Include="Views\Admin\_ProjectAdministrateDetailsPreview.cshtml" />
     <Content Include="Views\Admin\_ProjectStatus.cshtml" />
     <Content Include="Views\Admin\SeeTasks.cshtml" />
-    <Content Include="Views\Comments\Create.cshtml" />
-    <Content Include="Views\Comments\Delete.cshtml" />
-    <Content Include="Views\Comments\Edit.cshtml" />
-    <Content Include="Views\Comments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

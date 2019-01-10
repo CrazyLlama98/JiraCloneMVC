@@ -5,96 +5,119 @@
 }
 
 <div class="container my-5">
-    <div class="card shadow-lg">
-        <div class="card-body row justify-content-between p-4 p-lg-5">
-            <h2 class="card-title col-12 pb-2 border-bottom">@Model.Title</h2>
-            @if (!string.IsNullOrEmpty(ViewBag.Role) && ViewBag.AdministratorRoles.Contains(ViewBag.Role))
-            {
-                <div class="row col-12">
-                    <a href="/projects/@Model.ProjectId/tasks/@Model.Id/edit" class="btn btn-outline-primary m-2">Edit</a>
-                    @using (Html.BeginForm("Delete", "Tasks", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.HttpMethodOverride(HttpVerbs.Delete)
-                        @Html.AntiForgeryToken()
-                        <input type="submit" value="Delete" class="btn btn-outline-danger m-2" />
-                    }
-                </div>
-            }
+<div class="card shadow-lg">
+    <div class="card-body row justify-content-between p-4 p-lg-5">
+        <h2 class="card-title col-12 pb-2 border-bottom">@Model.Title</h2>
+        @if (!string.IsNullOrEmpty(ViewBag.Role) && ViewBag.AdministratorRoles.Contains(ViewBag.Role))
+        {
             <div class="row col-12">
-                <div class="dropdown m-2">
-                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownStatusButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Edit Status
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownStatusButton">
-                        @if (!Model.Status.Equals(Constants.TaskStatus.Done))
-                        {
-                            using (Html.BeginForm("EditStatus", "Tasks", new { newStatus = Constants.TaskStatus.Done, projectId = Model.ProjectId, taskId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                            {
-                                @Html.HttpMethodOverride(HttpVerbs.Put)
-                                @Html.AntiForgeryToken()
-                                <input type="submit" value="Done" class="dropdown-item" />
-                            }
-                        }
-                        @if (!Model.Status.Equals(Constants.TaskStatus.ToDo))
-                        {
-                            using (Html.BeginForm("EditStatus", "Tasks", new { newStatus = Constants.TaskStatus.ToDo, projectId = Model.ProjectId, taskId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                            {
-                                @Html.HttpMethodOverride(HttpVerbs.Put)
-                                @Html.AntiForgeryToken()
-                                <input type="submit" value="To Do" class="dropdown-item" />
-                            }
-                        }
-                        @if (!Model.Status.Equals(Constants.TaskStatus.InProgress))
-                        {
-                            using (Html.BeginForm("EditStatus", "Tasks", new { newStatus = Constants.TaskStatus.InProgress, projectId = Model.ProjectId, taskId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                            {
-                                @Html.HttpMethodOverride(HttpVerbs.Put)
-                                @Html.AntiForgeryToken()
-                                <input type="submit" value="In Progress" class="dropdown-item" />
-                            }
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="row col-11 col-md-5">
-                <div class="col-11 col-md-6">Reporter: </div>
-                <div class="col-11 col-md-6">
-                    @if (Model.Reporter != null)
-                    {
-                        @Model.Reporter.Username
-                    }
-                </div>
-                <div class="col-11 col-md-6">Assignee: </div>
-                <div class="col-11 col-md-6">
-                    @if (Model.Assignee != null)
-                    {
-                        @Model.Assignee.Username
-                    }
-                    else
-                    {
-                        <span>Unassigned</span>
-                    }
-                </div>
-                <div class="col-11 col-md-6">Status: </div>
-                <div class="col-11 col-md-6">
-                    @Html.Partial("_TaskStatus", Model.Status)
-                </div>
-            </div>
-            <div class="row col-11 col-md-5">
-                <div class="col-11 col-md-6">Start Date:</div>
-                <div class="col-11 col-md-6 small">@Model.StartDate</div>
-                @if (Model.EndDate.HasValue)
+                <a href="/projects/@Model.ProjectId/tasks/@Model.Id/edit" class="btn btn-outline-primary m-2">Edit</a>
+                @using (Html.BeginForm("Delete", "Tasks", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    <div class="col-11 col-md-6">End Date:</div>
-                    <div class="col-11 col-md-6 small">
-
-                        @Model.EndDate
-                    </div>
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    @Html.AntiForgeryToken()
+                    <input type="submit" value="Delete" class="btn btn-outline-danger m-2" />
                 }
             </div>
-            <br />
-            <h4 class="col-12 border-bottom pb-2">Description</h4>
-            <div class="col-12 task-description p-2 p-md-3 border border-primary">@Model.Description</div>
+        }
+        <div class="row col-12">
+            <div class="dropdown m-2">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownStatusButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit Status
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownStatusButton">
+                    @if (!Model.Status.Equals(Constants.TaskStatus.Done))
+                    {
+                        using (Html.BeginForm("EditStatus", "Tasks", new { newStatus = Constants.TaskStatus.Done, projectId = Model.ProjectId, taskId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.HttpMethodOverride(HttpVerbs.Put)
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Done" class="dropdown-item" />
+                        }
+                    }
+                    @if (!Model.Status.Equals(Constants.TaskStatus.ToDo))
+                    {
+                        using (Html.BeginForm("EditStatus", "Tasks", new { newStatus = Constants.TaskStatus.ToDo, projectId = Model.ProjectId, taskId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.HttpMethodOverride(HttpVerbs.Put)
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="To Do" class="dropdown-item" />
+                        }
+                    }
+                    @if (!Model.Status.Equals(Constants.TaskStatus.InProgress))
+                    {
+                        using (Html.BeginForm("EditStatus", "Tasks", new { newStatus = Constants.TaskStatus.InProgress, projectId = Model.ProjectId, taskId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.HttpMethodOverride(HttpVerbs.Put)
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="In Progress" class="dropdown-item" />
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row col-11 col-md-5">
+            <div class="col-11 col-md-6">Reporter: </div>
+            <div class="col-11 col-md-6">
+                @if (Model.Reporter != null)
+                {
+                    @Model.Reporter.Username
+                }
+            </div>
+            <div class="col-11 col-md-6">Assignee: </div>
+            <div class="col-11 col-md-6">
+                @if (Model.Assignee != null)
+                {
+                    @Model.Assignee.Username
+                }
+                else
+                {
+                    <span>Unassigned</span>
+                }
+            </div>
+            <div class="col-11 col-md-6">Status: </div>
+            <div class="col-11 col-md-6">
+                @Html.Partial("_TaskStatus", Model.Status)
+            </div>
+        </div>
+        <div class="row col-11 col-md-5">
+            <div class="col-11 col-md-6">Start Date:</div>
+            <div class="col-11 col-md-6 small">@Model.StartDate</div>
+            @if (Model.EndDate.HasValue)
+            {
+                <div class="col-11 col-md-6">End Date:</div>
+                <div class="col-11 col-md-6 small">
+
+                    @Model.EndDate
+                </div>
+            }
+        </div>
+        <br />
+        <h4 class="col-12 border-bottom pb-2">Description</h4>
+        <div class="col-12 task-description p-2 p-md-3 border border-primary">@Model.Description</div>
+
+        <br />
+        <h4 class="col-12 border-bottom pb-2">Comments</h4>
+
+
+        @{
+            foreach (var comment in Model.Comments)
+            {
+                <div class="col-12 border border-primary">
+                    <div class="col-12">@comment.Content</div>
+                </div>
+            }
+        }
+
+        <div class="card-body row justify-content-between p-4 p-lg-5">
+            <form action="/Tasks/CreateNewComment" method="post">
+                <input type="hidden" name="TaskId" value="@Model.Id" />
+                <textarea name="Content" class="form-control">Comment here... !</textarea>
+                <div class="form-group col-4 col-md-2 text-center">
+                    <input type="submit" value="Comment" class="btn btn-default" />
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </div>

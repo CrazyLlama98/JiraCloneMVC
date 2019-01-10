@@ -19,6 +19,6 @@ namespace JiraCloneMVC.Web.Models
         public string ReporterId { get; set; }
         public User Reporter { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

@@ -78,7 +78,8 @@ namespace JiraCloneMVC.Web.Controllers
                 Status = task.Status,
                 StartDate = task.StartDate,
                 EndDate = task.EndDate,
-                ProjectId = task.ProjectId.Value
+                ProjectId = task.ProjectId.Value,
+                Comments = task.Comments,
             });
         }
 
@@ -190,5 +191,31 @@ namespace JiraCloneMVC.Web.Controllers
             _taskRepository.Update(task);
             return RedirectToAction("ViewTask", new { projectId, taskId });
         }
+
+        [HttpPost]
+        public ActionResult CreateNewComment(Comment c)
+        {
+            try
+            {
+                Comment comment = new Comment();
+                comment.TaskId = c.TaskId;
+                comment.OwnerId = User.Identity.GetUserId();
+                comment.Content = c.Content;
+
+                ApplicationDbContext db = new ApplicationDbContext();
+
+                db.Comments.Add(comment);
+                db.SaveChanges();
+
+                Task task = db.Tasks.Find(c.TaskId);
+
+                return RedirectToAction("ViewTask", new {projectId = task.ProjectId, taskId = c.TaskId});
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        
     }
 }

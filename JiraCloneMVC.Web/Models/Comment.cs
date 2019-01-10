@@ -16,8 +16,8 @@ namespace JiraCloneMVC.Web.Models
         public string OwnerId { get; set; }
         public int TaskId { get; set; }
 
-        public User Owner { get; set; }
-        public Task Task { get; set; }
+        public virtual User Owner { get; set; }
+        public virtual Task Task { get; set; }
 
     }
 }
