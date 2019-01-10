@@ -2,6 +2,7 @@
 using System.Linq;
 using JiraCloneMVC.Web.Models;
 using JiraCloneMVC.Web.Repositories.Interfaces;
+using System.Data.Entity;
 
 namespace JiraCloneMVC.Web.Repositories
 {
@@ -18,7 +19,12 @@ namespace JiraCloneMVC.Web.Repositories
 
         public override Task GetById(object id)
         {
-            return Entries.Include("Assignee").Include("Reporter").FirstOrDefault(t => t.Id == (int) id);
+            return Entries
+                .Include("Assignee")
+                .Include("Reporter")
+                .Include(t => t.Comments)
+                .Include(t => t.Comments.Select(c => c.Owner))
+                .FirstOrDefault(t => t.Id == (int) id);
         }
     }
 }

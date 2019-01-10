@@ -103,8 +103,9 @@
         @{
             foreach (var comment in Model.Comments)
             {
-                <div class="col-12 border border-primary">
-                    <div class="col-12">@comment.Content</div>
+                <div class="col-12 m-2 row shadow border border-secondary">
+                    <div class="col-2 p-2">@comment.Owner.UserName:</div>
+                    <div class="col-9 p-2 task-description">@comment.Content</div>
                 </div>
             }
         }
