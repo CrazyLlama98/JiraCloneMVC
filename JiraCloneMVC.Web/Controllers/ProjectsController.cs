@@ -6,17 +6,26 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using JiraCloneMVC.Web.Attributes;
 using JiraCloneMVC.Web.Models;
+using JiraCloneMVC.Web.Repositories;
+using JiraCloneMVC.Web.Repositories.Interfaces;
+using JiraCloneMVC.Web.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace JiraCloneMVC.Web.Controllers
 {
+    [RoutePrefix("projects"), Authorize]
     public class ProjectsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IProjectRepository _projectRepository = new ProjectRepository(new ApplicationDbContext());
+        private IUserRepository _userRepository = new UserRepository(new ApplicationDbContext());
+        private IRoleRepository _roleRepository = new RoleRepository(new ApplicationDbContext());
+        private IGroupRepository _groupRepository = new GroupRepository(new ApplicationDbContext());
 
         // GET: Projects
+        [Route]
         public ActionResult Index()
         {
             if (TempData.ContainsKey("message"))
@@ -26,43 +35,29 @@ namespace JiraCloneMVC.Web.Controllers
 
             dynamic mymodel = new ExpandoObject();
             mymodel.UserName = User.Identity.GetUserName();
-
-            List<Project> projectsAdministrate = new List<Project>();
-            foreach (var project in db.Projects.ToList())
+            if (User.IsInRole("Administrator"))
             {
-                foreach (var group in db.Groups.ToList())
-                {
-                    if(group.UserId == User.Identity.GetUserId() && project.Id == group.ProjectId && 
-                       project.OrganizerId == User.Identity.GetUserId())
-                        projectsAdministrate.Add(project);
-                }
+                mymodel.ProjectsAdministrate = _projectRepository.GetAll();
+                mymodel.ProjectsNonAdministrate = new List<Project>();
             }
-            mymodel.ProjectsAdministrate = projectsAdministrate;
-
-            List<Project> projectsNonAdministrate = new List<Project>();
-            foreach (var project in db.Projects.ToList())
-            {
-                foreach (var group in db.Groups.ToList())
-                {
-                    if (group.UserId == User.Identity.GetUserId() && project.Id == group.ProjectId &&
-                        project.OrganizerId != User.Identity.GetUserId())
-                        projectsNonAdministrate.Add(project);
-                }
+            else {
+                mymodel.ProjectsAdministrate = _projectRepository.GetByOrganizer(User.Identity.GetUserId());
+                mymodel.ProjectsNonAdministrate = _projectRepository.GetByMember(User.Identity.GetUserId());
+                mymodel.Users = _userRepository.GetAll();
             }
-            mymodel.ProjectsNonAdministrate = projectsNonAdministrate;
-
-            mymodel.Users = db.Users.ToList();
             return View(mymodel);
         }
 
         // GET: Projects/Details/5
+        [Route("{id}/details")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator,Member", ProjectIdQueryParam = "id")]
         public ActionResult Details(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(id);
+            var project = _projectRepository.GetById(id);
             if (project == null) return HttpNotFound();
-            ViewBag.OrganizerName = db.Users.Find(project.OrganizerId).UserName;
+            ViewBag.OrganizerName = _userRepository.GetById(project.OrganizerId).UserName;
             ViewBag.Rol = "Member";
             if (project.OrganizerId == User.Identity.GetUserId())
                 ViewBag.Rol = "Organizator";
@@ -74,27 +69,19 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         // GET: Projects/Details/5
+        [Route("{id}/detailsmembers")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator,Member", ProjectIdQueryParam = "id")]
         public ActionResult DetailsMembers(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(id);
+            var project = _projectRepository.GetById(id);
             if (project == null) return HttpNotFound();
 
             dynamic mymodel = new ExpandoObject();
             mymodel.Project = project;
-            mymodel.Organizer = db.Users.Find(project.OrganizerId);
-
-            List<User> members = new List<User>();
-            foreach (var user in db.Users.ToList())
-            {
-                foreach (var group in db.Groups.ToList())
-                {
-                    if (project.Id == group.ProjectId && group.UserId == user.Id && user.Id != project.OrganizerId)
-                        members.Add(user);
-                }
-            }
-            mymodel.Members = members;
+            
+            mymodel.Members = _userRepository.GetAllFromProject(project.Id);
             ViewBag.Rol = "Member";
             if (project.OrganizerId == User.Identity.GetUserId())
                 ViewBag.Rol = "Organizator";
@@ -106,6 +93,7 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         // GET: Projects/Create
+        [Route("create")]
         public ActionResult Create()
         {
             return View();
@@ -113,117 +101,111 @@ namespace JiraCloneMVC.Web.Controllers
 
         // POST: Projects/Create
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Status,StartDate,EndDate")]
-            Project project)
+        public ActionResult Create(CreateProjectViewModel newProject)
         {
             if (ModelState.IsValid)
             {
+                var project = new Project { Name = newProject.Name, Description = newProject.Description };
                 project.OrganizerId = User.Identity.GetUserId();
-
-                Group group = new Group();
-                group.UserId = project.OrganizerId;
-                group.ProjectId = project.Id;
-                group.RoleId = db.Roles
-                    .FirstOrDefault(x => x.Name.Equals("Organizator", StringComparison.OrdinalIgnoreCase)).Id;
-                db.Groups.Add(group);
-
-                db.Projects.Add(project);
-                db.SaveChanges();
+                project.StartDate = DateTime.Now;
+                project.Status = Constants.ProjectStatus.Open;
+                _projectRepository.Add(project);
+                Group group = new Group
+                {
+                    UserId = project.OrganizerId,
+                    ProjectId = project.Id,
+                    RoleId = _roleRepository.FirstOrDefault(x => x.Name.Equals("Organizator", StringComparison.OrdinalIgnoreCase)).Id
+                };
+                _groupRepository.Add(group);
                 return RedirectToAction("Index");
             }
-
-            return View(project);
+            return View(newProject);
         }
 
-        // GET: Projects/Create
+        [Route("{id}/AddMember")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "id")]
         public ActionResult AddMember(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(id);
+            var project = _projectRepository.GetById(id);
             if (project == null) return HttpNotFound();
 
             dynamic mymodel = new ExpandoObject();
             mymodel.Project = project;
-            mymodel.Organizer = db.Users.Find(project.OrganizerId);
+            mymodel.Organizers = _userRepository.GetUsersInProjectsByRole("Organizator", project.Id);
 
-            List<User> members = new List<User>();
-            foreach (var user in db.Users.ToList())
-            {
-                bool isMember = false;
-                foreach (var group in db.Groups.ToList())
-                {
-                    if (project.Id == group.ProjectId && group.UserId == user.Id)
-                        isMember = true;
-                }
-                if (!isMember)
-                    members.Add(user);
-            }
-
-            mymodel.Users = members;
+            mymodel.Users = _userRepository.GetNonMembersOfProject(project.Id);
             return View(mymodel);
         }
 
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("{idProj}/addmember/{idUser}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "idProj")]
         public ActionResult AddMember( int? idProj, string idUser)
         {
-
             if (idProj == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(idProj);
+            var project = _projectRepository.GetById(idProj);
             if (project == null) return HttpNotFound();
 
             if (idUser == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var user = db.Users.Find(idUser);
+            var user = _userRepository.GetById(idUser);
             if (user == null) return HttpNotFound();
 
-            Group group = new Group();
-            group.UserId = user.Id;
-            group.ProjectId = project.Id;
-            group.RoleId = db.Roles
-                .FirstOrDefault(x => x.Name.Equals("Member", StringComparison.OrdinalIgnoreCase)).Id;
-            db.Groups.Add(group);
-
-            db.SaveChanges();
+            Group group = new Group
+            {
+                UserId = user.Id,
+                ProjectId = project.Id,
+                RoleId = _roleRepository.FirstOrDefault(x => x.Name.Equals("Member", StringComparison.OrdinalIgnoreCase)).Id
+            };
+            _groupRepository.Add(group);
 
             return RedirectToAction("DetailsMembers", new {id = idProj});
         }
 
-        // GET: Projects/Edit/5
-        //[Authorize(Roles = "Organizator,Administrator")]
+        [Route("{id}/edit")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "id")]
         public ActionResult Edit(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(id);
+            var project = _projectRepository.GetById(id);
 
             if (project == null) return HttpNotFound();
 
             if (project.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
-                return View(project);
+                return View(new EditProjectViewModel { Id = project.Id, Name = project.Name, Description = project.Description, Status = project.Status });
 
             TempData["message"] = "You do not have the right to make changes to " +
                                   "a PROJECT that does not belong to you!";
             return RedirectToAction("Index");
         }
 
-        // POST: Projects/Edit/5
-        [HttpPost]
+        [Route("{id}")]
+        [HttpPut]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Organizator,Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,OrganizerId,Name,Description,Status,StartDate,EndDate")]
-            Project project)
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "id")]
+        public ActionResult Update(EditProjectViewModel project, int id)
         {
             if (ModelState.IsValid)
             {
-                if (project.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+                var projectDb = _projectRepository.GetById(id);
+                if (projectDb.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
                 {
-                    db.Entry(project).State = EntityState.Modified;
-                    db.SaveChanges();
+                    if (project.Status.Equals(Constants.ProjectStatus.Closed))
+                        projectDb.EndDate = DateTime.Now;
+                    else
+                        projectDb.EndDate = null;
+                    projectDb.Name = project.Name;
+                    projectDb.Description = project.Description;
+                    projectDb.Status = project.Status;
+                    _projectRepository.Update(projectDb);
                     return RedirectToAction("Index");
                 }
 
@@ -235,13 +217,13 @@ namespace JiraCloneMVC.Web.Controllers
             return View(project);
         }
 
-        // GET: Projects/Delete/5
-        //[Authorize(Roles = "Organizator,Administrator")]
+        [Route("{id}/delete")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "id")]
         public ActionResult Delete(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(id);
+            var project = _projectRepository.GetById(id);
             if (project == null) return HttpNotFound();
 
             if (project.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
@@ -253,17 +235,16 @@ namespace JiraCloneMVC.Web.Controllers
         }
 
         // POST: Projects/Delete/5
-        [HttpPost]
-        [ActionName("Delete")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Organizator,Administrator")]
+        [Route("{id}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "id")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var project = db.Projects.Find(id);
+            var project = _projectRepository.GetById(id);
             if (project.OrganizerId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
-                db.Projects.Remove(project);
-                db.SaveChanges();
+                _projectRepository.Delete(project);
                 return RedirectToAction("Index");
             }
 
@@ -272,37 +253,20 @@ namespace JiraCloneMVC.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) db.Dispose();
-
-            base.Dispose(disposing);
-        }
-
-        [HttpPost]
+        [HttpDelete]
         [ActionName("DeleteMember")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Organizator,Administrator")]
+        [Route("{projId}/members/{userId}")]
+        [ProjectGroupAuthorize(Roles = "Administrator,Organizator", ProjectIdQueryParam = "projId")]
         public ActionResult DeleteMember(string userId, int? projId)
         {
             if (userId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             if (projId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Group gr = null;
+            var group = _groupRepository.FirstOrDefault(g => g.UserId == userId && g.ProjectId == projId);
+            if (group == null) return HttpNotFound();
 
-            foreach (var grup in db.Groups.ToList())
-            {
-                if (grup.UserId == userId && grup.ProjectId == projId)
-                {
-                    gr = grup;
-                    break;
-                }
-
-            }
-            if (gr == null) return HttpNotFound();
-
-            db.Groups.Remove(gr);
-            db.SaveChanges();
+            _groupRepository.Delete(group);
 
             return RedirectToAction("DetailsMembers", new { id = projId });
         }

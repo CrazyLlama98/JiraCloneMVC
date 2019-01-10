@@ -14,5 +14,6 @@ namespace JiraCloneMVC.Web.Repositories.Interfaces
         IEnumerable<T> GetAll();
         T GetById(object id);
         IEnumerable<T> Where(Expression<Func<T, bool>> predicate);
+        T FirstOrDefault(Expression<Func<T, bool>> predicate);
     }
 }

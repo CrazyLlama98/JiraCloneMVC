@@ -4,16 +4,17 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["projectId"] = Model.Project.Id;
 }
 <div class="container my-5">
     <h2>Project members</h2>
 
     @if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
     {
-        @Html.Partial("DetailsMembersForOrganizerAndAdmin");
+        @Html.Partial("DetailsMembersForOrganizerAndAdmin", ViewData);
     }
     else
     {
-        @Html.Partial("DetailsMembersForMembers");
+        @Html.Partial("DetailsMembersForMembers", ViewData);
     }
 </div>

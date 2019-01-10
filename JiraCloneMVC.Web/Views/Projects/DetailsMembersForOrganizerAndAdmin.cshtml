@@ -7,15 +7,14 @@
 <div class="row d-none d-md-flex text-cen">
     <div class="col-md-2">User Name</div>
     <div class="col-md-2">Role</div>
-    <div class="col-md-1">Email</div>
-    <div class="col-md-3">Phone</div>
+    <div class="col-md-3">Email</div>
+    <div class="col-md-1">Phone</div>
 </div>
 <hr class="d-none d-md-block" />
 
-@Html.Partial("_UserOrganizerInfo", (User)Model.Organizer)
-
 @foreach (User item in Model.Members)
 {
+    var role = item.Groups.FirstOrDefault(g => g.ProjectId == (int)ViewData["projectId"]).Role.Name;
     <div class="card shadow-lg tile-link mb-2">
         <div class="row card-body">
             <div class="col-6 d-block d-md-none">Reporter</div>
@@ -24,7 +23,7 @@
             </div>
             <div class="col-6 d-block d-md-none">Title</div>
             <div class="col-6 col-md-2 text-truncate">
-                Member
+                @role
             </div>
             <div class="col-6 d-block d-md-none">Description</div>
             <div class="col-6 col-md-3 text-truncate">
@@ -34,17 +33,18 @@
             <div class="col-6 col-md-1">
                 @item.PhoneNumber
             </div>
-            <div class="col-6 d-block d-md-none">Delete</div>
-            <div class="col-6 col-md-1">
-                <form method="post" action="/Projects/DeleteMember">
-                    @Html.AntiForgeryToken()
-                    <input name="userId" value=@item.Id style="display: none" />
-                    <input name="projId" value=@Model.Project.Id style="display: none" />
-                    <div class="form-actions no-color">
-                        <input type="submit" value="Delete" class="btn btn-default" />
-                    </div>
-                </form>
-            </div>
+            @if (ViewBag.Rol.Equals("Administrator") || role.Equals("Member"))
+            {
+                <div class="col-6 col-md-1">
+                    <form method="post" action="/Projects/@Model.Project.Id/members/@item.Id">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        @Html.AntiForgeryToken()
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Delete" class="btn btn-default" />
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
     </div>
 }

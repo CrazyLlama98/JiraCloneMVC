@@ -1,7 +1,7 @@
 ﻿@using JiraCloneMVC.Web.ViewModels
 @model TaskViewModel
 
-<a class="card shadow-lg tile-link mb-2" href="@Url.Action("ViewTask", "Tasks", new { taskId = Model.Id, projectId = Model.ProjectId })">
+<a class="card shadow tile-link mb-2" href="@Url.Action("ViewTask", "Tasks", new { taskId = Model.Id, projectId = Model.ProjectId })">
     <div class="row card-body">
         <div class="col-6 d-block d-md-none">Title</div>
         <div class="col-6 col-md-2 text-truncate">
