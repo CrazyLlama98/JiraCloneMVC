@@ -195,12 +195,16 @@
     <Compile Include="Repositories\Interfaces\IGenericRepository.cs" />
     <Compile Include="Repositories\Interfaces\IGroupRepository.cs" />
     <Compile Include="Repositories\Interfaces\IProjectRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IRoleRepository.cs" />
     <Compile Include="Repositories\Interfaces\ITaskRepository.cs" />
     <Compile Include="Repositories\Interfaces\IUserRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="ViewModels\CreateProjectViewModel.cs" />
     <Compile Include="ViewModels\CreateTaskViewModel.cs" />
+    <Compile Include="ViewModels\EditProjectViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
@@ -326,7 +330,6 @@
     <Content Include="Views\Projects\_ProjectAdministrateDetailsPreview.cshtml" />
     <Content Include="Views\Projects\_ProjectNonAdministrateDetailsPreview.cshtml" />
     <Content Include="Views\Projects\_UserMemberInfo.cshtml" />
-    <Content Include="Views\Projects\_UserOrganizerInfo.cshtml" />
     <Content Include="Views\Admin\SwitchOrganizator.cshtml" />
     <Content Include="Views\Admin\_ProjectAdministrateDetailsPreview.cshtml" />
     <Content Include="Views\Admin\_ProjectStatus.cshtml" />

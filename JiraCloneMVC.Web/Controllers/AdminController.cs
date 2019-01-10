@@ -174,26 +174,31 @@ namespace JiraCloneMVC.Web.Controllers
         {
             if (projId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var project = db.Projects.Find(projId);
+            var project = db.Projects.Include(p => p.Organizer).FirstOrDefault(p => p.Id == projId);
             if (project == null) return HttpNotFound();
 
             if (userId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var user = db.Users.Find(userId);
             if (user == null) return HttpNotFound();
-
-            var groupAux = from gr in db.Groups
+            var initialOrganizer = project.Organizer;
+            var groupAux = (from gr in db.Groups
                 where gr.UserId == userId && gr.ProjectId == projId
-                select gr;
+                select gr).AsEnumerable();
 
             if (groupAux.Count() != 1)
                 return HttpNotFound();
 
             var group = groupAux.First();
             group.RoleId = db.Roles
-                .FirstOrDefault(x => x.Name.Equals("Organizator", StringComparison.OrdinalIgnoreCase)).Id;
-
-            db.Entry(group).State = EntityState.Modified; // nu functioneaza :(
+                .FirstOrDefault(x => x.Name.Equals("Organizator", StringComparison.OrdinalIgnoreCase))?.Id;
+            var groupInitialOrganizer = db.Groups.FirstOrDefault(g => g.UserId == initialOrganizer.Id && g.ProjectId == projId.Value);
+            groupInitialOrganizer.RoleId = db.Roles
+                .FirstOrDefault(x => x.Name.Equals("Member", StringComparison.OrdinalIgnoreCase))?.Id;
+            project.OrganizerId = user.Id;
+            db.Entry(group).State = EntityState.Modified;
+            db.Entry(project).State = EntityState.Modified;
+            db.Entry(groupInitialOrganizer).State = EntityState.Modified;
 
             db.SaveChanges();
 

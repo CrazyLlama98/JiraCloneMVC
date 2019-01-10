@@ -14,7 +14,7 @@
     </p>
     <h2>Project Info</h2>
     <div class="row d-none d-md-flex text-cen">
-        <div class="col-md-2">Organizer Name</div>
+        <div class="col-md-2">Reporter</div>
         <div class="col-md-2">Name</div>
         <div class="col-md-1">Description</div>
         <div class="col-md-3">Status</div>
@@ -28,9 +28,8 @@
     
     <div class="row d-none d-md-flex text-cen">
         <div class="col-md-2">User Name</div>
-        <div class="col-md-1">Email</div>
-        <div class="col-md-3">Phone</div>
-        <div class="col-md-3">Add Button</div>
+        <div class="col-md-3">Email</div>
+        <div class="col-md-2">Phone</div>
     </div>
     <hr class="d-none d-md-block" />
     
@@ -48,16 +47,12 @@
                     @item.Email
                 </div>
                 <div class="col-6 d-block d-md-none">Status</div>
-                <div class="col-6 col-md-1">
+                <div class="col-6 col-md-2">
                     @item.PhoneNumber
                 </div>
-
-                <div class="col-6 d-block d-md-none">Add</div>
                 <div class="col-6 col-md-1">
-                    <form method="post" action="/Projects/AddMember">
+                    <form method="post" action="/Projects/@Model.Project.Id/AddMember/@item.Id">
                         @Html.AntiForgeryToken()
-                        <input id="idProj" name="idProj" type="text" value="@Model.Project.Id" style="display: none" />
-                        <input id="idUser" name="idUser" type="text" value="@item.Id" style="display: none" />
                         <input type="submit" value="Add" class="btn btn-dark" />
                     </form>
                 </div>

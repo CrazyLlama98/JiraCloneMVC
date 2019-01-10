@@ -19,31 +19,31 @@ namespace JiraCloneMVC.Web.Repositories
             Entries = dbContext.Set<T>();
         }
 
-        public void Add(T entry)
+        public virtual void Add(T entry)
         {
             Entries.Add(entry);
             DbContext.SaveChanges();
         }
 
-        public void AddRange(IEnumerable<T> entries)
+        public virtual void AddRange(IEnumerable<T> entries)
         {
             Entries.AddRange(entries);
             DbContext.SaveChanges();
         }
 
-        public void Delete(T entry)
+        public virtual void Delete(T entry)
         {
             Entries.Remove(entry);
             DbContext.SaveChanges();
         }
 
-        public void DeleteRange(IEnumerable<T> entries)
+        public virtual void DeleteRange(IEnumerable<T> entries)
         {
             Entries.RemoveRange(entries);
             DbContext.SaveChanges();
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return Entries.AsEnumerable();
         }
@@ -53,16 +53,21 @@ namespace JiraCloneMVC.Web.Repositories
             return Entries.Find(id);
         }
 
-        public void Update(T entry)
+        public virtual void Update(T entry)
         {
             DbContext.Set<T>().Attach(entry);
             DbContext.Entry(entry).State = EntityState.Modified;
             DbContext.SaveChanges();
         }
 
-        public IEnumerable<T> Where(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Where(Expression<Func<T, bool>> predicate)
         {
             return Entries.Where(predicate).AsEnumerable();
+        }
+
+        public virtual T FirstOrDefault(Expression<Func<T, bool>> predicate)
+        {
+            return Entries.FirstOrDefault(predicate);
         }
     }
 }

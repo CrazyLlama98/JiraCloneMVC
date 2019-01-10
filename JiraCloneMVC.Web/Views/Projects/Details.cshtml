@@ -25,14 +25,12 @@
                 <div class="col-11 col-md-6">Start Date:</div>
                 <div class="col-11 col-md-6 small">@Model.StartDate</div>
 
-                <div class="col-11 col-md-6">Start Date:</div>
+                <div class="col-11 col-md-6">End Date:</div>
                 <div class="col-11 col-md-6 small">@Model.EndDate</div>
             </div>
             <br />
             <h4 class="col-12 border-bottom pb-2">Description</h4>
-            <div class="col-12 task-description p-2 p-md-3 border border-primary">
-                @Model.Description
-            </div>
+            <div class="col-12 task-description p-2 p-md-3 border border-primary">@Model.Description</div>
             <div  class="col-12 p-2 p-md-3">
                 @if (ViewBag.Rol.ToString().Equals("Organizator") || ViewBag.Rol.ToString().Equals("Administrator"))
                 {

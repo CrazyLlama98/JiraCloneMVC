@@ -1,5 +1,4 @@
-﻿@using JiraCloneMVC.Web.ViewModels
-@model JiraCloneMVC.Web.Models.User
+﻿@model JiraCloneMVC.Web.Models.User
 <div class="card shadow-lg tile-link mb-2">
     <div class="row card-body">
         <div class="col-6 d-block d-md-none">Reporter</div>
@@ -8,7 +7,7 @@
         </div>
         <div class="col-6 d-block d-md-none">Title</div>
         <div class="col-6 col-md-2 text-truncate">
-            Member
+            @Model.Groups.FirstOrDefault(g => g.ProjectId == (int) ViewData["projectId"]).Role.Name
         </div>
         <div class="col-6 d-block d-md-none">Description</div>
         <div class="col-6 col-md-3 text-truncate">

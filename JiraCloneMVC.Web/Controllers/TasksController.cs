@@ -179,6 +179,8 @@ namespace JiraCloneMVC.Web.Controllers
             task.Status = newStatus;
             if (newStatus.Equals(Constants.TaskStatus.Done))
                 task.EndDate = DateTime.Now;
+            else
+                task.EndDate = null;
             _taskRepository.Update(task);
             return RedirectToAction("ViewTask", new { projectId, taskId });
         }

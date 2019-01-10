@@ -8,12 +8,9 @@
 </div>
 <hr class="d-none d-md-block" />
 
-
-@Html.Partial("_UserOrganizerInfo", (User) Model.Organizer)
-
 @foreach (User item in Model.Members)
 {
-    @Html.Partial("_UserMemberInfo", item)
+    @Html.Partial("_UserMemberInfo", item, ViewData)
 }
 
 

@@ -20,7 +20,8 @@ namespace JiraCloneMVC.Web
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Task>().HasOptional(t => t.Reporter).WithMany().HasForeignKey(t => t.ReporterId);
             modelBuilder.Entity<Task>().HasOptional(t => t.Assignee).WithMany().HasForeignKey(t => t.AssigneeId);
-            modelBuilder.Entity<Task>().HasOptional(t => t.Project).WithMany(p => p.Tasks).HasForeignKey(t => t.ProjectId);
+            modelBuilder.Entity<Task>().HasRequired(t => t.Project).WithMany(p => p.Tasks).HasForeignKey(t => t.ProjectId).WillCascadeOnDelete();
+            modelBuilder.Entity<Group>().HasRequired(t => t.Project).WithMany(p => p.Groups).HasForeignKey(t => t.ProjectId).WillCascadeOnDelete();
         }
 
         public static ApplicationDbContext Create()
